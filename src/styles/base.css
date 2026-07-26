@@ -1,0 +1,106 @@
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-behavior: auto; /* Lenis owns smooth scrolling; native smooth-scroll would fight it. */
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  img,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+  /*
+   * MASTER.md §37: visible focus indicators everywhere, never removed.
+   * :focus-visible so mouse clicks don't show a ring, only keyboard/AT use.
+   */
+  :focus-visible {
+    outline: 2px solid var(--color-mercury);
+    outline-offset: 2px;
+    border-radius: var(--radius-input);
+  }
+
+  ::selection {
+    background-color: var(--color-mercury);
+    color: var(--color-ink);
+  }
+
+  /* MASTER.md §37 §56: reduced motion is honored globally as a hard floor,
+     in addition to the JS-level branches in useHeroTimeline/Lenis/GSAP. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Pure-CSS FOUC guard for the splash screen (docs/DECISIONS.md — Phase
+   * 7): `data-splash-seen` is set on <html> by a synchronous inline script
+   * in root.tsx's <head>, which runs before the body is even parsed — so a
+   * repeat visit within the same tab session never paints the splash for
+   * even one frame, let alone flashes it. Also covers reduced motion
+   * directly (rather than relying only on the JS check inside
+   * SplashScreen) so it's correct even if JS is slow to hydrate. */
+  [data-splash-seen="true"] #splash-screen {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #splash-screen {
+      display: none;
+    }
+  }
+}

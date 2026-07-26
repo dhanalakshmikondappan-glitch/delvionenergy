@@ -1,0 +1,34 @@
+# dependencies
+node_modules/
+
+# raw asset masters (67MB+; never served or bundled — see docs/DECISIONS.md
+# Phase 2 note #2 and Phase 5. Only public/media/, public/fonts/, public/og/
+# — the generated, optimized derivatives — are actually served.)
+assets/
+
+# build output
+build/
+dist/
+.react-router/
+
+# env
+.env
+.env.local
+.env.*.local
+
+# logs
+*.log
+npm-debug.log*
+
+# tooling artifacts
+.playwright-mcp/
+
+# editor / OS
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+
+# generated
+public/sitemap.xml
+public/robots.txt

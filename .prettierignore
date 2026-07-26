@@ -1,0 +1,10 @@
+# Client-provided brief documents — not ours to reformat.
+docs/CLAUDE.md
+docs/MASTER.md
+
+# Generated output.
+build/
+node_modules/
+public/media/
+public/sitemap.xml
+public/robots.txt

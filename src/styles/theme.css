@@ -1,0 +1,150 @@
+/*
+ * Design tokens — the single source of truth referenced by docs/DESIGN_SYSTEM.md.
+ * Tailwind v4's @theme both emits real CSS custom properties AND generates
+ * matching utility classes from the same declaration, so there is exactly
+ * one place any of these values are ever written (docs/MASTER.md §68 §69).
+ */
+
+@theme {
+  /*
+   * ---- Color — Phase 6 rebrand (docs/DECISIONS.md), exact hex values ----
+   * Named for how they read as Tailwind utilities (bg-surface, text-ink,
+   * border-line), not as a literal transcription of a brand-doc's variable
+   * names — `--color-bg-primary` would generate an awkward `bg-bg-primary`
+   * utility (Tailwind's own `bg-` prefix stuttering against the token name).
+   */
+  --color-surface: #f6f5f1; /* paper — primary page background */
+  --color-surface-elevated: #ffffff; /* cards, elevated surfaces */
+  --color-surface-dark: #163c2e; /* deep solar green — dark sections, footer, mobile menu */
+  --color-ink: #14201b; /* primary text */
+  --color-ink-muted: #636b66; /* secondary/supporting text */
+  --color-ink-inverse: #f6f5f1; /* text on dark surfaces */
+  --color-mercury: #4fa97e; /* primary accent — CTAs, links, growth. Fill only: text-mercury on
+    light backgrounds fails AA (2.6:1) — use text-ink on mercury fills, or mercury only for icons/
+    borders/fills, never as small body text color on a light surface. */
+  --color-dawn: #e8a94a; /* signature accent — used sparingly, small details only, never a large fill */
+  --color-panel: #c7ccc6; /* secondary — borders, panel motif */
+  --color-line: #e1e3de; /* default hairline border */
+  --color-line-strong: #c7ccc6; /* emphasized border — literal Panel Silver */
+  --color-success: #4caf50;
+  --color-warning: #ff9800;
+  --color-error: #f44336;
+
+  /* ---- Radius — §113, exact ---- */
+  --radius-input: 14px;
+  --radius-button: 16px;
+  --radius-card: 20px;
+  --radius-image: 24px;
+
+  /* ---- Shadow — §114, subtle neutral elevation only ---- */
+  --shadow-sm: 0 1px 2px 0 rgb(17 17 17 / 0.04), 0 1px 1px 0 rgb(17 17 17 / 0.03);
+  --shadow-md: 0 4px 10px -2px rgb(17 17 17 / 0.06), 0 2px 4px -2px rgb(17 17 17 / 0.04);
+  --shadow-lg: 0 16px 32px -8px rgb(17 17 17 / 0.1), 0 4px 8px -4px rgb(17 17 17 / 0.05);
+
+  /* ---- Type scale — §119, fluid via clamp so §120 can never overflow ---- */
+  --text-display: clamp(2.5rem, 1.86rem + 2.86vw, 4rem); /* 40 -> 64 */
+  --text-display--line-height: 1.05;
+  --text-display--font-weight: 600;
+  --text-hero: clamp(2.25rem, 1.74rem + 2.29vw, 3.5rem); /* 36 -> 56 */
+  --text-hero--line-height: 1.08;
+  --text-hero--font-weight: 600;
+  --text-section: clamp(1.75rem, 1.44rem + 1.43vw, 2.5rem); /* 28 -> 40 */
+  --text-section--line-height: 1.15;
+  --text-section--font-weight: 600;
+  --text-subheading: clamp(1.375rem, 1.19rem + 0.86vw, 1.75rem); /* 22 -> 28 */
+  --text-subheading--line-height: 1.3;
+  --text-subheading--font-weight: 500;
+  --text-body-lg: clamp(1.0625rem, 0.98rem + 0.36vw, 1.25rem); /* 17 -> 20 */
+  --text-body-lg--line-height: 1.6;
+  --text-body: 1rem; /* 16 */
+  --text-body--line-height: 1.6;
+  --text-caption: 0.875rem; /* 14 */
+  --text-caption--line-height: 1.5;
+  --text-fine: 0.75rem; /* 12 */
+  --text-fine--line-height: 1.5;
+
+  /* ---- Typography — §8, 3 weights total: 400 / 500 / 600 ---- */
+  --font-heading: "Space Grotesk", "Space Grotesk Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-numeric: "IBM Plex Sans", "IBM Plex Sans Fallback", ui-sans-serif, system-ui, sans-serif;
+
+  /* ---- Motion — §32 §110 ---- */
+  --duration-fast: 200ms;
+  --duration-normal: 350ms;
+  --duration-slow: 600ms;
+  --duration-hero: 2200ms;
+  --ease-calm: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ---- Container widths — §112 ---- */
+  --container-max: 1440px;
+  --container-content: 1200px;
+  --container-reading: 720px;
+  --container-form: 560px;
+  --container-calculator: 900px;
+
+  /* ---- Section rhythm — §111 ---- */
+  --spacing-section-mobile: 72px;
+  --spacing-section-tablet: 96px;
+  --spacing-section-desktop: 120px;
+
+  /* ---- Breakpoints — §94 (redefines Tailwind's defaults to the spec) ---- */
+  --breakpoint-sm: 23.4375rem; /* 375px */
+  --breakpoint-md: 48rem; /* 768px */
+  --breakpoint-lg: 64rem; /* 1024px */
+  --breakpoint-xl: 80rem; /* 1280px */
+  --breakpoint-2xl: 90rem; /* 1440px */
+  --breakpoint-3xl: 120rem; /* 1920px */
+
+  /* ---- Decorative motion ---- */
+  --animate-scroll-hint: scroll-hint 2s ease-in-out infinite;
+  --animate-energy-flow: energy-flow 2.5s linear infinite;
+}
+
+/* MASTER.md §20: energy particles, mercury-green, slow, continuous, never distracting. */
+@keyframes energy-flow {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(calc(100% - 8px));
+    opacity: 0;
+  }
+}
+
+/* Companion keyframes for --animate-scroll-hint above — Tailwind v4 doesn't
+ * auto-generate @keyframes from an --animate-* token, only the utility that
+ * references it. prefers-reduced-motion is handled globally in base.css. */
+@keyframes scroll-hint {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(6px);
+    opacity: 1;
+  }
+}
+
+/*
+ * Tokens with no Tailwind utility-generating namespace — plain CSS custom
+ * properties, read directly via var() from components and animation code
+ * (src/animations/tokens.ts mirrors these so JS and CSS cannot drift).
+ */
+:root {
+  /* z-index scale: keeps stacking-context bugs from arbitrary large values. */
+  --z-dropdown: 10;
+  --z-sticky-nav: 20;
+  --z-overlay: 30;
+  --z-mobile-menu: 40;
+  --z-modal: 50;
+  --z-toast: 60;
+  --z-splash: 100; /* site-entry splash screen — above everything, including toasts */
+}
