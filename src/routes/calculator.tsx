@@ -104,7 +104,11 @@ export default function Calculator() {
             />
 
             {billIsValid ? (
-              <div className="mt-2">
+              // pr-16: same fixed-WhatsAppButton collision zone as the
+              // results grid below — this column is also full container
+              // width below lg:, and the right-aligned amount spans sit
+              // right where the button does at narrow widths.
+              <div className="mt-2 pr-16 lg:pr-0">
                 <p className="text-caption text-ink-muted">Estimated monthly bill, before and after solar</p>
                 <div className="mt-2 flex flex-col gap-2">
                   <div className="flex items-center gap-3">
@@ -133,7 +137,15 @@ export default function Calculator() {
             ) : null}
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          {/* pr-16: the fixed WhatsAppButton (right-6 bottom-6, 56px) sits in
+              the bottom-right ~80px of the viewport below lg:, which
+              overlaps this grid's own right edge at narrow widths (the
+              container's right padding alone doesn't clear it) — verified
+              directly, the CO2 card's value sat behind the button at
+              320-375px without this. Not needed at lg:+, where this block
+              is the right-hand column of a wide, centered container far
+              from the viewport edge. */}
+          <div className="grid grid-cols-2 gap-4 pr-16 lg:pr-0">
             <ResultStat label="Estimated System Size">{animatedSystemSize.toFixed(1)} kW</ResultStat>
             <ResultStat label="Payback Period">{animatedPayback.toFixed(1)} yrs</ResultStat>
             <ResultStat label="Monthly Savings">{formatRupees(animatedMonthlySavings)}</ResultStat>
