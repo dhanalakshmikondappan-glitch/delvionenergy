@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { useFocusTrap } from "~/hooks/useFocusTrap";
@@ -17,12 +17,27 @@ interface ModalProps {
  * always-mounted + `inert` + CSS-transition pattern as MobileMenu, for the
  * same reason: conditional mounting an AnimatePresence exit was unreliable
  * in this project's own testing (see docs/DECISIONS.md).
+ *
+ * Same `mounted` gate as MobileMenu, for the same confirmed reason: the
+ * portal has no server output at all, so rendering it unconditionally on
+ * the client's first render (guarded only by `typeof document ===
+ * "undefined"`, true only on the server) inserted a new subtree straight
+ * into document.body during hydration and produced a real React error
+ * #418 on every route that mounts a Modal (Projects).
  */
 export function Modal({ open, onClose, title, children }: ModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
 
   useFocusTrap(panelRef, open);
   useLockBodyScroll(open);
+
+  useEffect(() => {
+    // Mount-gate for the portal below, not a data sync — see MobileMenu's
+    // identical call for the full explanation.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -35,7 +50,7 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
     };
   }, [open, onClose]);
 
-  if (typeof document === "undefined") return null;
+  if (!mounted) return null;
 
   return createPortal(
     <div
