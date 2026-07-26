@@ -28,7 +28,25 @@ export function useHeroTimeline(containerRef: RefObject<HTMLElement | null>, { e
     const container = containerRef.current;
     if (!container) return;
 
-    if (!enabled) {
+    // On a repeat visit within the same tab the splash is skipped, so
+    // replaying the theatrical reveal would just look like the hero loading
+    // in from blank on every reload. Snap straight to the final state
+    // instead — same as the reduced-motion branch — so a reload (or an
+    // in-session return to the home route) is instant and seamless. base.css
+    // already does this visually via pure CSS before this effect runs, so
+    // there's no flash; skipping the timeline here also avoids importing
+    // GSAP at all on a reload. Reads the same signals the splash uses: the
+    // <html> data attribute (set on full reload) and sessionStorage (also
+    // covers a client-side navigation back to home within the session).
+    let splashSeen = document.documentElement.dataset.splashSeen === "true";
+    try {
+      splashSeen = splashSeen || sessionStorage.getItem("delvion-splash-seen") === "1";
+    } catch {
+      // sessionStorage unavailable (private mode) — fall back to the
+      // data attribute alone, which still covers the full-reload case.
+    }
+
+    if (!enabled || splashSeen) {
       container.querySelectorAll<HTMLElement>("[data-hero]").forEach((el) => {
         el.style.opacity = "1";
         el.style.transform = "none";

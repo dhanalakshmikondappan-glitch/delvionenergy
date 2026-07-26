@@ -103,4 +103,26 @@
       display: none;
     }
   }
+
+  /* Hero entrance elements ([data-hero=*]) start hidden (opacity-0 + a small
+   * translate) and are revealed by useHeroTimeline's GSAP timeline on the
+   * first visit, under cover of the splash. On a repeat visit within the
+   * same tab the splash is skipped (data-splash-seen, set by root.tsx's
+   * inline <head> script from sessionStorage before the body paints), so
+   * replaying that reveal-from-blank would just read as the hero re-loading
+   * on every reload. Show it in full immediately instead — pure CSS, before
+   * any JS runs, so there's zero flash — and useHeroTimeline skips the
+   * timeline to match. Reduced motion, which never animates, gets the same
+   * treatment so its content is never left invisible for a frame. */
+  [data-splash-seen="true"] [data-hero] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-hero] {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
 }

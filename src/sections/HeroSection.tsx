@@ -133,9 +133,20 @@ export function HeroSection() {
           and scrolls (useHeroCinematic). Stays in normal flow (not
           absolutely positioned) so its own content still determines the
           section's natural bottom-aligned layout. */}
+        {/* The content is bottom-aligned (justify-end on the section), so its
+            headline sits at `viewport height − stack height` from the top:
+            if the full stack — headline, subtitle, CTAs, trust row — is
+            taller than the viewport, that number goes negative and the
+            headline slides up off the top, under the logo/nav. The fix is
+            purely keeping the stack shorter than the viewport on a phone
+            (compact trust chips + tighter mobile spacing here), which keeps
+            the headline both fully visible and clear of the 80px navbar —
+            verified down to a 667px-tall screen. Reduced bottom padding on
+            mobile buys a little more of that headroom; full spacing returns
+            from md up, where the viewport dwarfs the content anyway. */}
         <div
           data-cinematic="hero-content"
-          className="relative z-10 mx-auto w-full max-w-[var(--container-content)] px-4 pb-16 sm:px-6 lg:px-8 lg:pb-24"
+          className="relative z-10 mx-auto w-full max-w-[var(--container-content)] px-4 pb-10 sm:px-6 md:pb-16 lg:px-8 lg:pb-24"
         >
           <h1 aria-label={HEADLINE} className="max-w-3xl text-hero text-ink-inverse">
             {HEADLINE_WORDS.map((word, index) => (
@@ -152,14 +163,14 @@ export function HeroSection() {
 
           <p
             data-hero="subtitle"
-            className="mt-6 max-w-xl translate-y-[10px] text-body-lg text-ink-inverse/85 opacity-0"
+            className="mt-4 max-w-xl translate-y-[10px] text-body-lg text-ink-inverse/85 opacity-0 md:mt-6"
           >
             {SUBTITLE}
           </p>
 
           <div
             data-hero="cta"
-            className="mt-8 flex translate-y-[10px] flex-col gap-4 opacity-0 md:flex-row"
+            className="mt-6 flex translate-y-[10px] flex-col gap-3 opacity-0 md:mt-8 md:flex-row md:gap-4"
           >
             <Button to={ROUTE_PATHS.contact}>Get Free Consultation</Button>
             <Button to={ROUTE_PATHS.solutions} variant="secondary" inverse>
@@ -167,7 +178,7 @@ export function HeroSection() {
             </Button>
           </div>
 
-          <div className="mt-10">
+          <div className="mt-6 md:mt-10">
             <TrustIndicators />
           </div>
         </div>
