@@ -28,12 +28,24 @@ export default function Contact() {
             description="Schedule a free site visit, or reach us directly. Business details below are placeholders — see docs/DECISIONS.md."
           />
 
-          <div className="mt-12 grid gap-12 lg:grid-cols-2">
-            <div className="mx-auto w-full max-w-[var(--container-form)]">
+          {/* pr-20: clears the fixed WhatsAppButton (right-6 bottom-6, 56px,
+              ~80px collision zone below lg:) — confirmed directly, the
+              message textarea's corner and the submit button sat behind it
+              at 320-375px. Both stacked mobile columns (form, then contact
+              cards) share this one wrapper, so a single fix here covers
+              both. Not needed at lg:+, where this becomes a column in a
+              centered, wide-margined layout far from the viewport edge. */}
+          <div className="mt-12 grid gap-12 pr-20 lg:grid-cols-2 lg:pr-0">
+            {/* min-w-0: grid items default to min-width: auto, so without
+                this the column refused to shrink below its content's
+                intrinsic width and overflowed straight past the pr-20
+                clearance above — confirmed directly (the form measured
+                13.6px wider than its own track). */}
+            <div className="mx-auto w-full min-w-0 max-w-[var(--container-form)]">
               <ContactForm />
             </div>
 
-            <div className="flex flex-col gap-6">
+            <div className="flex min-w-0 flex-col gap-6">
               <a
                 href={`tel:${COMPANY.phone}`}
                 className="flex items-center gap-4 rounded-[var(--radius-card)] border border-line bg-surface-elevated p-6 transition-colors duration-fast hover:border-mercury"

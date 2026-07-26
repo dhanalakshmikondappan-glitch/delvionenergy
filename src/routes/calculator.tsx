@@ -74,7 +74,12 @@ export default function Calculator() {
         />
 
         <div className="mt-12 grid gap-8 lg:grid-cols-2">
-          <div className="flex flex-col gap-6">
+          {/* min-w-0: grid items default to min-width: auto and can refuse
+              to shrink below their content's intrinsic width, overflowing
+              past the pr-20 clearance below regardless of its value —
+              confirmed on the contact page's identical grid pattern.
+              Defensive here too, same structure. */}
+          <div className="flex min-w-0 flex-col gap-6">
             <Input
               label="Monthly Electricity Bill (₹)"
               type="number"
@@ -104,11 +109,11 @@ export default function Calculator() {
             />
 
             {billIsValid ? (
-              // pr-16: same fixed-WhatsAppButton collision zone as the
+              // pr-20: same fixed-WhatsAppButton collision zone as the
               // results grid below — this column is also full container
               // width below lg:, and the right-aligned amount spans sit
               // right where the button does at narrow widths.
-              <div className="mt-2 pr-16 lg:pr-0">
+              <div className="mt-2 pr-20 lg:pr-0">
                 <p className="text-caption text-ink-muted">Estimated monthly bill, before and after solar</p>
                 <div className="mt-2 flex flex-col gap-2">
                   <div className="flex items-center gap-3">
@@ -137,7 +142,7 @@ export default function Calculator() {
             ) : null}
           </div>
 
-          {/* pr-16: the fixed WhatsAppButton (right-6 bottom-6, 56px) sits in
+          {/* pr-20: the fixed WhatsAppButton (right-6 bottom-6, 56px) sits in
               the bottom-right ~80px of the viewport below lg:, which
               overlaps this grid's own right edge at narrow widths (the
               container's right padding alone doesn't clear it) — verified
@@ -145,7 +150,7 @@ export default function Calculator() {
               320-375px without this. Not needed at lg:+, where this block
               is the right-hand column of a wide, centered container far
               from the viewport edge. */}
-          <div className="grid grid-cols-2 gap-4 pr-16 lg:pr-0">
+          <div className="grid min-w-0 grid-cols-2 gap-4 pr-20 lg:pr-0">
             <ResultStat label="Estimated System Size">{animatedSystemSize.toFixed(1)} kW</ResultStat>
             <ResultStat label="Payback Period">{animatedPayback.toFixed(1)} yrs</ResultStat>
             <ResultStat label="Monthly Savings">{formatRupees(animatedMonthlySavings)}</ResultStat>
