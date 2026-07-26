@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { NavLink } from "react-router";
 
@@ -27,12 +27,34 @@ interface MobileMenuProps {
  * `prefers-reduced-motion` is already handled globally (src/styles/base.css
  * forces all transition durations to ~0 under that media query), so no
  * separate reduced-motion branch is needed here either.
+ *
+ * The portal only renders once `mounted` (set in an effect, after
+ * hydration commits) — not merely once `document` exists. `createPortal`
+ * has no server output at all, so rendering it unconditionally on the
+ * client's first render (the old guard was just `typeof document ===
+ * "undefined"`) made that first render insert a brand-new subtree
+ * straight into `document.body` — the exact container hydration is
+ * walking to match the rest of the tree against the server HTML — which
+ * is a real, confirmed hydration mismatch (React error #418) on every
+ * route, not a theoretical one. Gating on `mounted` makes the client's
+ * first render identical to the server's (null), matching the pattern
+ * SplashScreen already uses correctly.
  */
 export function MobileMenu({ open, onClose, id }: MobileMenuProps) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
 
   useFocusTrap(panelRef, open);
   useLockBodyScroll(open);
+
+  useEffect(() => {
+    // Mount-gate for the portal below, not a data sync — the render output
+    // is identical (null) on the server and the client's first render, so
+    // there's no hydration-mismatch risk, just the exact pattern this lint
+    // rule can't distinguish from one. Matches SplashScreen's same call.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -45,10 +67,7 @@ export function MobileMenu({ open, onClose, id }: MobileMenuProps) {
     };
   }, [open, onClose]);
 
-  // Guards the createPortal(..., document.body) call below — this
-  // component's render body runs in Node during prerendering, where
-  // `document` does not exist.
-  if (typeof document === "undefined") return null;
+  if (!mounted) return null;
 
   return createPortal(
     <div
@@ -59,7 +78,7 @@ export function MobileMenu({ open, onClose, id }: MobileMenuProps) {
       aria-hidden={!open}
       aria-label="Site menu"
       inert={!open}
-      className={`fixed inset-0 z-[var(--z-mobile-menu)] flex flex-col bg-surface-dark/95 text-ink-inverse backdrop-blur-sm transition-all duration-normal ${
+      className={`fixed inset-0 z-[var(--z-mobile-menu)] flex flex-col overflow-y-auto bg-surface-dark/95 text-ink-inverse backdrop-blur-sm transition-all duration-normal ${
         open ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-4 opacity-0"
       }`}
     >
