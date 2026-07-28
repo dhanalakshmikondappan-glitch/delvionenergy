@@ -5,6 +5,7 @@ import { buildMetaTags } from "~/constants/seo";
 import { ROUTE_PATHS } from "~/constants/routePaths";
 import { HeroSection } from "~/sections/HeroSection";
 import { HowSolarWorksPreview } from "~/sections/HowSolarWorksPreview";
+import { ProductsSection } from "~/sections/ProductsSection";
 import { SolutionsTeaserSection } from "~/sections/SolutionsTeaserSection";
 import { WhyDelvionSection } from "~/sections/WhyDelvionSection";
 import { WhySolarSection } from "~/sections/WhySolarSection";
@@ -22,6 +23,8 @@ export default function Home() {
       <WhySolarSection />
       <HowSolarWorksPreview />
       <SolutionsTeaserSection />
+
+      <ProductsSection />
 
       <WhyDelvionSection />
 
