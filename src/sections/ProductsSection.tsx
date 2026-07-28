@@ -77,11 +77,11 @@ export function ProductsSection() {
           description="Delvion Energy also supplies certified PV accessories to installers and vendors across Tamil Nadu — panels and inverters sourced across multiple brands, plus balance-of-system components."
         />
 
-        <div className="mx-auto mt-12 max-w-[var(--container-reading)]">
+        <div className="mx-auto mt-8 md:mt-12 max-w-[var(--container-reading)]">
           <ProductCarousel slides={PRODUCT_SLIDES} />
         </div>
 
-        <StaggerGroup className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+        <StaggerGroup className="mt-10 md:mt-16 grid gap-4 md:gap-6 md:grid-cols-3 lg:grid-cols-5">
           {CATEGORIES.map((category) => (
             <StaggerItem key={category.title}>
               <FeatureCard
@@ -93,14 +93,14 @@ export function ProductsSection() {
           ))}
         </StaggerGroup>
 
-        <div className="mt-12 flex flex-col gap-6 rounded-[var(--radius-card)] bg-surface-dark p-8 text-ink-inverse md:flex-row md:items-center md:justify-between md:p-10">
+        <div className="mt-8 md:mt-12 flex flex-col gap-4 rounded-[var(--radius-card)] bg-surface-dark p-6 text-ink-inverse sm:gap-6 sm:p-8 md:flex-row md:items-center md:justify-between md:p-10">
           <div>
             <h3 className="text-subheading text-ink-inverse">Supplying vendors across Tamil Nadu</h3>
             <p className="mt-2 text-body text-ink-inverse/85">
               Dealer, EPC contractor, or local electrical vendor — enquire for volume pricing.
             </p>
           </div>
-          <Button to={ROUTE_PATHS.contact}>Enquire as a Vendor</Button>
+          <Button to={ROUTE_PATHS.contact} className="w-full shrink-0 md:w-auto">Enquire as a Vendor</Button>
         </div>
       </Container>
     </Section>

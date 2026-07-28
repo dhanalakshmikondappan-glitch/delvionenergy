@@ -82,6 +82,8 @@ export function ProductCarousel({ slides }: ProductCarouselProps) {
       onMouseLeave={() => { setPaused(false); }}
       onFocus={() => { setPaused(true); }}
       onBlur={() => { setPaused(false); }}
+      onTouchStart={() => { setPaused(true); }}
+      onTouchEnd={() => { setPaused(false); }}
     >
       <div
         role="group"
@@ -166,7 +168,7 @@ export function ProductCarousel({ slides }: ProductCarouselProps) {
                   paginate(-1);
                 }}
                 aria-label="Previous product"
-                className="absolute top-1/2 left-2 -translate-y-1/2 rounded-full bg-surface-elevated/85 p-2 text-ink shadow-sm backdrop-blur-sm transition-colors duration-fast hover:bg-surface-elevated md:left-3"
+                className="absolute top-1/2 left-2 -translate-y-1/2 rounded-full bg-surface-elevated/85 p-3 text-ink shadow-sm backdrop-blur-sm transition-colors duration-fast hover:bg-surface-elevated md:left-3 md:p-2"
               >
                 <ChevronLeft aria-hidden="true" size={22} />
               </button>
@@ -176,7 +178,7 @@ export function ProductCarousel({ slides }: ProductCarouselProps) {
                   paginate(1);
                 }}
                 aria-label="Next product"
-                className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-surface-elevated/85 p-2 text-ink shadow-sm backdrop-blur-sm transition-colors duration-fast hover:bg-surface-elevated md:right-3"
+                className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-surface-elevated/85 p-3 text-ink shadow-sm backdrop-blur-sm transition-colors duration-fast hover:bg-surface-elevated md:right-3 md:p-2"
               >
                 <ChevronRight aria-hidden="true" size={22} />
               </button>
@@ -185,7 +187,7 @@ export function ProductCarousel({ slides }: ProductCarouselProps) {
         </div>
 
         {count > 1 ? (
-          <div className="mt-5 flex items-center justify-center gap-2.5">
+          <div className="mt-4 flex items-center justify-center">
             {slides.map((slide, dotIndex) => (
               <button
                 key={slide.basePath}
@@ -195,10 +197,14 @@ export function ProductCarousel({ slides }: ProductCarouselProps) {
                 }}
                 aria-label={`Go to slide ${dotIndex + 1}: ${slide.caption}`}
                 aria-current={dotIndex === index ? "true" : undefined}
-                className={`h-2.5 rounded-full transition-all duration-normal ${
-                  dotIndex === index ? "w-6 bg-mercury" : "w-2.5 bg-line-strong hover:bg-ink-muted"
-                }`}
-              />
+                className="p-2.5 flex items-center justify-center"
+              >
+                <span
+                  className={`block h-2.5 rounded-full transition-all duration-normal ${
+                    dotIndex === index ? "w-6 bg-mercury" : "w-2.5 bg-line-strong hover:bg-ink-muted"
+                  }`}
+                />
+              </button>
             ))}
           </div>
         ) : null}
