@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { useLocation } from "react-router";
 
 import { Footer } from "~/components/layout/Footer";
@@ -21,6 +21,26 @@ interface SiteLayoutProps {
 export function SiteLayout({ children }: SiteLayoutProps) {
   const location = useLocation();
   const overHero = location.pathname === ROUTE_PATHS.home;
+
+  // Hash-anchor scrolling (e.g. the "Products" nav link -> "/#products").
+  // Lenis is not wired up and html{scroll-behavior:auto}, so scroll the target
+  // into view explicitly. requestAnimationFrame runs it after ScrollRestoration
+  // has settled the new location so this wins; `scroll-mt-*` on the target
+  // handles the fixed-navbar offset. Honors reduced-motion.
+  useEffect(() => {
+    if (!location.hash) return;
+    const target = document.getElementById(location.hash.slice(1));
+    if (!target) return;
+    const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "auto"
+      : "smooth";
+    const frame = requestAnimationFrame(() => {
+      target.scrollIntoView({ behavior, block: "start" });
+    });
+    return () => {
+      cancelAnimationFrame(frame);
+    };
+  }, [location.hash, location.key]);
 
   return (
     <>
