@@ -1,5 +1,3 @@
-import { Home, PanelTop, Router, Sun, TrendingDown, Zap } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 import { useRef } from "react";
 
 import { Button } from "~/components/buttons/Button";
@@ -19,71 +17,20 @@ const SUBTITLE =
 
 const HEADLINE_WORDS = HEADLINE.split(" ");
 
-interface Phase {
-  icon: LucideIcon;
-  label: string;
-  description: string;
-}
-
-// Same six stages as EnergyFlow/HowSolarWorksPreview (MASTER.md §19) — the
-// journey half of this section is a cinematic retelling of the same
-// narrative, not a new one.
-const PHASES: Phase[] = [
-  {
-    icon: Sun,
-    label: "Sunlight",
-    description: "Every system starts with what's already free — sunlight on your roof.",
-  },
-  {
-    icon: PanelTop,
-    label: "Solar Panels",
-    description: "Panels convert that sunlight directly into DC electricity.",
-  },
-  {
-    icon: Zap,
-    label: "Inverter",
-    description: "The inverter turns DC power into the AC electricity your building runs on.",
-  },
-  {
-    icon: Home,
-    label: "Home / Business",
-    description:
-      "Power flows straight into your home or business, offsetting what you'd otherwise buy.",
-  },
-  {
-    icon: Router,
-    label: "Grid",
-    description: "Surplus power can flow back to the grid, depending on your connection type.",
-  },
-  {
-    icon: TrendingDown,
-    label: "Savings",
-    description: "Less drawn from the grid means a smaller bill, month after month.",
-  },
-];
-
 /**
- * MASTER.md §16/§17/§74, extended by docs/DECISIONS.md — Phase 7: the hero
- * no longer autoplays a video. Frame 1 of the same 60-frame sequence used
- * for the (now-merged) journey section renders as a plain `<img>` for
- * first paint; once the entrance timeline settles, scrolling scrubs the
- * canvas through the sequence while the headline/CTA crossfade into the
- * six-phase energy-journey story.
+ * Scroll-driven cinematic hero: frame 1 of a 60-frame WebP sequence
+ * renders as a plain `<img>` for first paint; scrolling scrubs the canvas
+ * through the full sequence while the headline, CTAs, and trust indicators
+ * stay visible over the animation.
  *
  * The visual section is `position: sticky`, not GSAP-pinned — an outer
  * wrapper (`wrapperRef`) reserves the scroll distance via plain responsive
  * CSS height, and the section sticks to the top of the viewport for as
- * long as the wrapper is being scrolled through, exactly like a pin would
- * look, but without GSAP ever touching the DOM structure. See the long
- * comment in `useHeroCinematic.ts` for why: GSAP's `pin: true` reparents
- * the pinned element under a "pin-spacer" div it inserts directly, which
- * conflicts with React's own idea of the tree and caused a real crash on
- * navigating away mid-pin.
+ * long as the wrapper is being scrolled through.
  *
- * The word-by-word h1 reveal still carries the full headline via
- * aria-label on the heading itself; the animated per-word spans are
- * aria-hidden, so screen readers announce the complete string once rather
- * than fragmenting it into six separate words.
+ * The word-by-word h1 reveal carries the full headline via aria-label on
+ * the heading itself; the animated per-word spans are aria-hidden, so
+ * screen readers announce the complete string once.
  */
 export function HeroSection() {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -94,11 +41,10 @@ export function HeroSection() {
   useHeroTimeline(sectionRef, { enabled: !prefersReducedMotion });
   const { loadProgress, isReady } = useHeroCinematic(wrapperRef, sectionRef, canvasRef, {
     enabled: !prefersReducedMotion,
-    phaseCount: PHASES.length,
   });
 
   return (
-    <div ref={wrapperRef} className="relative h-[270vh] md:h-[340vh] lg:h-[420vh]">
+    <div ref={wrapperRef} className="relative h-[180vh] md:h-[220vh] lg:h-[280vh]">
       <section
         ref={sectionRef}
         className="sticky top-0 flex h-screen min-h-[100svh] w-full flex-col justify-end overflow-hidden bg-surface-dark"
@@ -144,10 +90,7 @@ export function HeroSection() {
             verified down to a 667px-tall screen. Reduced bottom padding on
             mobile buys a little more of that headroom; full spacing returns
             from md up, where the viewport dwarfs the content anyway. */}
-        <div
-          data-cinematic="hero-content"
-          className="relative z-10 mx-auto w-full max-w-[var(--container-content)] px-4 pb-10 sm:px-6 md:pb-16 lg:px-8 lg:pb-24"
-        >
+        <div className="relative z-10 mx-auto w-full max-w-[var(--container-content)] px-4 pb-10 sm:px-6 md:pb-16 lg:px-8 lg:pb-24">
           <h1 aria-label={HEADLINE} className="max-w-3xl text-hero text-ink-inverse">
             {HEADLINE_WORDS.map((word, index) => (
               <span
@@ -183,50 +126,7 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* Journey — hidden at rest, crossfades in as the hero pitch fades
-          out. Absolutely positioned over the same bottom-aligned area. */}
-        <div
-          data-cinematic="journey-content"
-          className="absolute inset-0 z-10 flex h-full flex-col justify-end px-6 pb-16 opacity-0 md:px-12 md:pb-20 lg:px-20"
-        >
-          <div className="max-w-2xl">
-            <p className="text-caption font-medium tracking-[0.08em] text-dawn uppercase">
-              The Journey
-            </p>
-            <h2 className="mt-3 text-section text-ink-inverse">
-              From sunlight to savings, step by step
-            </h2>
-
-            <ol className="mt-8 space-y-4">
-              {PHASES.map((phase, index) => (
-                <li
-                  key={phase.label}
-                  data-cinematic-phase={index}
-                  className="flex items-start gap-4 opacity-100 transition-opacity duration-500 data-[active=false]:opacity-40"
-                >
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-ink-inverse/25 bg-ink-inverse/10">
-                    <phase.icon
-                      aria-hidden="true"
-                      className="text-dawn"
-                      size={18}
-                      strokeWidth={1.75}
-                    />
-                  </span>
-                  <span>
-                    <span className="block text-body font-medium text-ink-inverse">
-                      {phase.label}
-                    </span>
-                    <span className="block text-caption text-ink-inverse/70">
-                      {phase.description}
-                    </span>
-                  </span>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </div>
-
-        <div data-cinematic="hero-content" className="absolute inset-x-0 bottom-0 z-10">
+        <div className="absolute inset-x-0 bottom-0 z-10">
           <ScrollIndicator />
         </div>
 

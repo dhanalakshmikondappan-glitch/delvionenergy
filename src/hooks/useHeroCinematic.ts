@@ -8,23 +8,8 @@ export function cinematicFrameSrc(n: number): string {
   return `${FRAME_BASE}-${String(n).padStart(3, "0")}.webp`;
 }
 
-/**
- * The hero-pitch -> journey crossfade window, as a fraction of total scroll
- * progress through the wrapper. Deliberately a single shared window where
- * heroOpacity + journeyOpacity === 1 at every point — an earlier version
- * computed these two independently (hero fading out over one span, journey
- * fading in over a longer one starting where hero ended) which left a real
- * gap where *both* were at or near zero opacity around 14% progress: the
- * hero had already fully faded, but journey hadn't ramped back up yet, so
- * scrolling through that stretch showed no readable text at all. This
- * version can't produce that gap by construction.
- */
-const CROSSFADE_START = 0.06;
-const CROSSFADE_END = 0.18;
-
 interface UseHeroCinematicOptions {
   enabled: boolean;
-  phaseCount: number;
 }
 
 interface UseHeroCinematicResult {
@@ -33,46 +18,22 @@ interface UseHeroCinematicResult {
 }
 
 /**
- * Drives the hero's scroll-scrubbed "journey" experience (docs/DECISIONS.md
- * — Phase 7): preloads the 60-frame sequence, then tracks scroll progress
- * through `wrapperRef` and maps it to the current canvas frame, the
- * hero-pitch -> journey content crossfade, and the active story-phase
- * caption. Per-scroll-tick work (frame draw, caption/content opacity,
- * progress bar) is imperative DOM manipulation rather than React state —
- * matching useHeroTimeline's approach, since re-rendering React on every
- * scroll tick would be needlessly expensive for something this
- * high-frequency.
+ * Drives the hero's scroll-scrubbed cinematic: preloads the 60-frame
+ * WebP sequence, then tracks scroll progress through `wrapperRef` and
+ * maps it to the current canvas frame and the progress bar. Per-scroll-tick
+ * work is imperative DOM manipulation rather than React state — re-rendering
+ * on every scroll tick would be needlessly expensive.
  *
- * Deliberately does **not** use GSAP ScrollTrigger's `pin: true`. Pinning
- * reparents the pinned element under a "pin-spacer" div GSAP inserts
- * directly into the DOM — a change React's own fiber tree never learns
- * about. That caused a real, reproducible crash: navigating away from the
- * homepage while the hero was pinned threw "Failed to execute 'removeChild'
- * ... The node to be removed is not a child of this node", because React
- * still believed the section's parent was whatever it was at mount, not
- * the pin-spacer GSAP had inserted since. Wrapping the ScrollTrigger
- * creation in `gsap.context()` + calling `.revert()` on cleanup — GSAP's
- * own documented fix for exactly this class of bug — did *not* resolve it
- * in testing (confirmed by reproducing the crash again afterward). The
- * reliable fix is to never let GSAP mutate the DOM structure at all:
- * `sectionRef` is a plain CSS `position: sticky` element (owned entirely by
- * React/JSX, see `HeroSection.tsx`), `wrapperRef` is a taller ancestor whose
- * CSS height reserves the scroll distance, and ScrollTrigger is only used
- * to *observe* scroll progress through that wrapper (no `pin`) and drive
- * imperative style updates — nothing it does can conflict with how React
- * thinks the tree is shaped.
- *
- * Canvas sizing uses a `ResizeObserver` on `<html>` rather than a `window`
- * `resize` listener — browser zoom changes the rendered viewport without
- * reliably firing a `resize` event in every embedding context. Every
- * callback is coalesced through a single pending `requestAnimationFrame` so
- * a drag-resize or a run of zoom steps can't queue up redundant redraws.
+ * Uses CSS `position: sticky` on the section, not GSAP's `pin: true`,
+ * to avoid GSAP reparenting the pinned element (which conflicts with React's
+ * fiber tree). ScrollTrigger only observes scroll progress — it never
+ * mutates the DOM structure.
  */
 export function useHeroCinematic(
   wrapperRef: RefObject<HTMLElement | null>,
   sectionRef: RefObject<HTMLElement | null>,
   canvasRef: RefObject<HTMLCanvasElement | null>,
-  { enabled, phaseCount }: UseHeroCinematicOptions,
+  { enabled }: UseHeroCinematicOptions,
 ): UseHeroCinematicResult {
   const [loadProgress, setLoadProgress] = useState(0);
   const [isReady, setIsReady] = useState(false);
@@ -143,17 +104,7 @@ export function useHeroCinematic(
     resizeCanvas(canvasEl);
     drawFrame(canvasEl, ctx, 0);
 
-    const phaseEls = Array.from(sectionEl.querySelectorAll<HTMLElement>("[data-cinematic-phase]"));
     const progressEl = sectionEl.querySelector<HTMLElement>('[data-cinematic="progress"]');
-    // querySelectorAll, not querySelector — the hero-pitch content is split
-    // across two sibling elements (the headline/CTA block and the scroll
-    // indicator), both tagged the same way so they fade together.
-    const heroContentEls = Array.from(
-      sectionEl.querySelectorAll<HTMLElement>('[data-cinematic="hero-content"]'),
-    );
-    const journeyContentEl = sectionEl.querySelector<HTMLElement>(
-      '[data-cinematic="journey-content"]',
-    );
 
     let resizeObserver: ResizeObserver | undefined;
 
@@ -177,37 +128,6 @@ export function useHeroCinematic(
                 drawn.frame = frameIndex;
                 drawFrame(canvasEl, ctx, frameIndex);
               }
-
-              // t goes 0 -> 1 across the crossfade window; hero and journey
-              // opacity are exact complements of each other at every point, so
-              // there is no scroll position where both are simultaneously dim.
-              const t = Math.min(
-                1,
-                Math.max(0, (self.progress - CROSSFADE_START) / (CROSSFADE_END - CROSSFADE_START)),
-              );
-              const heroOpacity = 1 - t;
-              const journeyOpacity = t;
-
-              heroContentEls.forEach((el) => {
-                el.style.opacity = String(heroOpacity);
-                el.style.pointerEvents = heroOpacity < 0.05 ? "none" : "auto";
-              });
-              if (journeyContentEl) {
-                journeyContentEl.style.opacity = String(journeyOpacity);
-              }
-
-              // Which of the six phases is highlighted is decoupled from the
-              // opacity crossfade above — it only starts advancing once the
-              // journey content is fully visible (t === 1), then progresses
-              // across the rest of the scroll distance.
-              const journeyProgress = Math.min(
-                1,
-                Math.max(0, (self.progress - CROSSFADE_END) / (1 - CROSSFADE_END)),
-              );
-              const phaseIndex = Math.min(phaseCount - 1, Math.floor(journeyProgress * phaseCount));
-              phaseEls.forEach((el, i) => {
-                el.dataset.active = String(i === phaseIndex);
-              });
 
               if (progressEl) progressEl.style.width = `${self.progress * 100}%`;
             },
@@ -233,7 +153,7 @@ export function useHeroCinematic(
       resizeObserver?.disconnect();
       gsapContext?.revert();
     };
-  }, [enabled, isReady, wrapperRef, sectionRef, canvasRef, phaseCount]);
+  }, [enabled, isReady, wrapperRef, sectionRef, canvasRef]);
 
   return { loadProgress, isReady };
 }
