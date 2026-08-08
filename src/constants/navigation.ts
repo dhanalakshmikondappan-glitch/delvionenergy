@@ -3,6 +3,8 @@ import { ROUTE_PATHS } from "./routePaths";
 export interface NavItem {
   label: string;
   path: string;
+  /** Temporary badge text shown next to the label, e.g. "NEW". */
+  badge?: string;
 }
 
 /**
@@ -13,7 +15,8 @@ export interface NavItem {
 export const NAV_ITEMS: NavItem[] = [
   { label: "How Solar Works", path: ROUTE_PATHS.howSolarWorks },
   { label: "Solutions", path: ROUTE_PATHS.solutions },
-  { label: "Products", path: `${ROUTE_PATHS.home}#products` },
+  { label: "Products", path: `${ROUTE_PATHS.home}#products`, badge: "NEW" },
+  { label: "Automation", path: `${ROUTE_PATHS.home}#automation`, badge: "NEW" },
   { label: "Projects", path: ROUTE_PATHS.projects },
   { label: "Calculator", path: ROUTE_PATHS.calculator },
   { label: "FAQ", path: ROUTE_PATHS.faq },

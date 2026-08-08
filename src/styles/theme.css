@@ -23,6 +23,8 @@
     light backgrounds fails AA (2.6:1) — use text-ink on mercury fills, or mercury only for icons/
     borders/fills, never as small body text color on a light surface. */
   --color-dawn: #e8a94a; /* signature accent — used sparingly, small details only, never a large fill */
+  --color-slate: #3b4a63; /* industrial automation accent — slate blue. AA-safe as text on surface
+    (~5.9:1) and on elevated (~6.5:1). Used for the Automation section's accent, tags, and CTA fill. */
   --color-panel: #c7ccc6; /* secondary — borders, panel motif */
   --color-line: #e1e3de; /* default hairline border */
   --color-line-strong: #c7ccc6; /* emphasized border — literal Panel Silver */

@@ -23,6 +23,11 @@ export function DesktopNav({ inverse = false }: DesktopNavProps) {
           }
         >
           {item.label}
+          {item.badge ? (
+            <span className="ml-1.5 inline-flex items-center rounded-full bg-mercury/15 px-1.5 py-0.5 text-fine font-semibold text-mercury">
+              {item.badge}
+            </span>
+          ) : null}
         </NavLink>
       ))}
     </nav>

@@ -1,10 +1,12 @@
 import { Button } from "~/components/buttons/Button";
+import { EnergyFlow } from "~/components/diagrams/EnergyFlow";
 import { Container } from "~/components/layout/Container";
 import { Section } from "~/components/layout/Section";
+import { ScrollReveal } from "~/components/motion/ScrollReveal";
 import { buildMetaTags } from "~/constants/seo";
 import { ROUTE_PATHS } from "~/constants/routePaths";
+import { AutomationSection } from "~/sections/AutomationSection";
 import { HeroSection } from "~/sections/HeroSection";
-import { HowSolarWorksPreview } from "~/sections/HowSolarWorksPreview";
 import { ProductsSection } from "~/sections/ProductsSection";
 import { SolutionsTeaserSection } from "~/sections/SolutionsTeaserSection";
 import { WhyDelvionSection } from "~/sections/WhyDelvionSection";
@@ -20,11 +22,20 @@ export default function Home() {
   return (
     <>
       <HeroSection />
+
+      <Section background="elevated">
+        <Container>
+          <ScrollReveal>
+            <EnergyFlow />
+          </ScrollReveal>
+        </Container>
+      </Section>
+
       <WhySolarSection />
-      <HowSolarWorksPreview />
       <SolutionsTeaserSection />
 
       <ProductsSection />
+      <AutomationSection />
 
       <WhyDelvionSection />
 

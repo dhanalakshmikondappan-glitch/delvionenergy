@@ -3,12 +3,23 @@ import type { LucideIcon } from "lucide-react";
 
 import { Button } from "~/components/buttons/Button";
 import { FeatureCard } from "~/components/cards/FeatureCard";
+import { FlowDiagram } from "~/components/diagrams/FlowDiagram";
 import { Container } from "~/components/layout/Container";
 import { Section } from "~/components/layout/Section";
 import { SectionHeader } from "~/components/layout/SectionHeader";
 import { ProductCarousel, type ProductSlide } from "~/components/media/ProductCarousel";
+import { ScrollReveal } from "~/components/motion/ScrollReveal";
 import { StaggerGroup, StaggerItem } from "~/components/motion/StaggerGroup";
 import { ROUTE_PATHS } from "~/constants/routePaths";
+
+const CIRCUIT_FLOW = [
+  "Panels",
+  "DC Distribution Box",
+  "Solar Cables",
+  "Inverter",
+  "AC Distribution Box",
+  "Earthing Kit",
+];
 
 // Real product photography (public/media/products/*) — every uploaded photo is
 // an AC/DC distribution / combiner box, so the carousel is that product family.
@@ -76,6 +87,10 @@ export function ProductsSection() {
           title="Everything between the panel and the socket"
           description="Delvion Energy also supplies certified PV accessories to installers and vendors across Tamil Nadu — panels and inverters sourced across multiple brands, plus balance-of-system components."
         />
+
+        <ScrollReveal className="mt-8 md:mt-12">
+          <FlowDiagram steps={CIRCUIT_FLOW} accentColor="mercury" />
+        </ScrollReveal>
 
         <div className="mx-auto mt-8 md:mt-12 max-w-[var(--container-reading)]">
           <ProductCarousel slides={PRODUCT_SLIDES} />
