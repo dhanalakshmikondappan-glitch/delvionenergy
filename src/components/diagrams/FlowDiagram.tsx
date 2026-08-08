@@ -18,6 +18,8 @@ interface FlowDiagramProps {
   steps: string[];
   accentColor?: AccentColor;
   className?: string;
+  /** Overrides the default "Process flow" label — e.g. "Component flow" for a wiring chain that isn't a sequence of steps over time. */
+  ariaLabel?: string;
 }
 
 function Connector({ accent }: { accent: AccentColor }) {
@@ -42,13 +44,18 @@ function Connector({ accent }: { accent: AccentColor }) {
   );
 }
 
-export function FlowDiagram({ steps, accentColor = "mercury", className }: FlowDiagramProps) {
+export function FlowDiagram({
+  steps,
+  accentColor = "mercury",
+  className,
+  ariaLabel = "Process flow",
+}: FlowDiagramProps) {
   const { dot } = ACCENT_CLASSES[accentColor];
 
   return (
     <div
       role="list"
-      aria-label="Process flow"
+      aria-label={ariaLabel}
       className={`flex flex-col items-center gap-0 lg:flex-row lg:items-center lg:justify-between lg:gap-0 ${className ?? ""}`}
     >
       {steps.map((step, index) => (

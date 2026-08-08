@@ -110,7 +110,7 @@ export function ProductsSection() {
         />
 
         <ScrollReveal className="mt-8 md:mt-12">
-          <FlowDiagram steps={CIRCUIT_FLOW} accentColor="mercury" />
+          <FlowDiagram steps={CIRCUIT_FLOW} accentColor="mercury" ariaLabel="Component flow" />
         </ScrollReveal>
 
         <div className="mx-auto mt-8 md:mt-12 max-w-[var(--container-reading)]">
