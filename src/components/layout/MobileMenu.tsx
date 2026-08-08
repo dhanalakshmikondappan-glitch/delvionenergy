@@ -103,11 +103,6 @@ export function MobileMenu({ open, onClose, id }: MobileMenuProps) {
             className="text-section font-heading font-semibold"
           >
             {item.label}
-            {item.badge ? (
-              <span className="ml-2 inline-flex items-center rounded-full bg-mercury/20 px-2 py-0.5 text-fine font-semibold text-mercury">
-                {item.badge}
-              </span>
-            ) : null}
           </NavLink>
         ))}
       </nav>
