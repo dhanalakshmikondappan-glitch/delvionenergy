@@ -9,7 +9,7 @@ interface NavActionsProps {
 /** MASTER.md §10: primary CTA "Get Free Consultation", secondary "Call Now". */
 export function NavActions({ inverse = false }: NavActionsProps) {
   return (
-    <div className="hidden items-center gap-3 lg:flex">
+    <div className="hidden items-center gap-3 xl:flex">
       <Button href={`tel:${COMPANY.phone}`} variant="secondary" inverse={inverse}>
         Call Now
       </Button>

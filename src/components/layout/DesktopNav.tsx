@@ -8,14 +8,14 @@ interface DesktopNavProps {
 
 export function DesktopNav({ inverse = false }: DesktopNavProps) {
   return (
-    <nav aria-label="Primary" className="hidden items-center gap-8 md:flex">
+    <nav aria-label="Primary" className="hidden items-center gap-5 xl:flex">
       {NAV_ITEMS.map((item) => (
         <NavLink
           key={item.path}
           to={item.path}
           className={({ isActive }) =>
             [
-              "text-body font-medium transition-colors duration-fast",
+              "whitespace-nowrap text-body font-medium transition-colors duration-fast",
               "underline decoration-2 underline-offset-4",
               isActive ? "decoration-current" : "decoration-transparent",
               inverse ? "text-ink-inverse hover:decoration-current" : "text-ink hover:decoration-current",
@@ -24,7 +24,7 @@ export function DesktopNav({ inverse = false }: DesktopNavProps) {
         >
           {item.label}
           {item.badge ? (
-            <span className="ml-1.5 inline-flex items-center rounded-full bg-mercury/15 px-1.5 py-0.5 text-fine font-semibold text-mercury">
+            <span className="ml-1 inline-flex items-center rounded-full bg-mercury/15 px-1 py-0.5 text-fine font-semibold text-mercury">
               {item.badge}
             </span>
           ) : null}
