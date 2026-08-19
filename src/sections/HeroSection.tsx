@@ -44,7 +44,7 @@ export function HeroSection() {
   });
 
   return (
-    <div ref={wrapperRef} className="relative h-[180vh] md:h-[220vh] lg:h-[280vh]">
+    <div ref={wrapperRef} className="relative h-[130vh] md:h-[150vh] lg:h-[170vh]">
       <section
         ref={sectionRef}
         className="sticky top-0 flex h-screen min-h-[100svh] w-full flex-col justify-end overflow-hidden bg-surface-dark"

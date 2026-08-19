@@ -12,8 +12,8 @@ export const COMPANY = {
   phoneDisplay: "TODO",
   // TODO: WhatsApp number, digits only, no "+" (used in wa.me links).
   whatsapp: "91TODO",
-  // TODO: real contact email.
-  email: "hello@TODO.example",
+  email: "Delvionenergy@gmail.com",
+  gstin: "33KMAPK9720H1ZY",
   address: {
     // TODO: real office address.
     streetAddress: "TODO",

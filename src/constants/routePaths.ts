@@ -7,7 +7,6 @@
  */
 export const ROUTE_PATHS = {
   home: "/",
-  howSolarWorks: "/how-solar-works",
   solutions: "/solutions",
   solutionsResidential: "/solutions/residential",
   solutionsCommercial: "/solutions/commercial",

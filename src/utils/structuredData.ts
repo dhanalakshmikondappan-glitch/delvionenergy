@@ -42,6 +42,7 @@ export function buildLocalBusinessJsonLd(): JsonLdObject {
     url: COMPANY.siteUrl,
     telephone: COMPANY.phone,
     email: COMPANY.email,
+    taxID: COMPANY.gstin,
     address: {
       "@type": "PostalAddress",
       streetAddress: COMPANY.address.streetAddress,

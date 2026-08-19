@@ -20,12 +20,6 @@ export const ROUTE_SEO: Record<RouteKey, RouteSeo> = {
       "Delvion Energy designs and installs intelligent solar systems that reduce electricity costs while building a cleaner future.",
     keywords: ["Solar Installation", "Rooftop Solar", "Solar Company Trichy"],
   },
-  howSolarWorks: {
-    title: "How Solar Works — Delvion Energy",
-    description:
-      "Solar energy is simpler than you think. See how sunlight becomes savings, from panel to grid.",
-    keywords: ["Solar EPC", "Renewable Energy"],
-  },
   solutions: {
     title: "Solar Solutions for Every Scale — Delvion Energy",
     description:
