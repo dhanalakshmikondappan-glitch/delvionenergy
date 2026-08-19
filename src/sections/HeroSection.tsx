@@ -80,17 +80,20 @@ export function HeroSection() {
           absolutely positioned) so its own content still determines the
           section's natural bottom-aligned layout. */}
         {/* The content is bottom-aligned (justify-end on the section), so its
-            headline sits at `viewport height − stack height` from the top:
-            if the full stack — headline, subtitle, CTAs, trust row — is
-            taller than the viewport, that number goes negative and the
+            headline sits at `viewport height − stack height − pb` from the
+            top: if the full stack — headline, subtitle, CTAs, trust row —
+            is taller than the viewport, that number goes negative and the
             headline slides up off the top, under the logo/nav. The fix is
             purely keeping the stack shorter than the viewport on a phone
             (compact trust chips + tighter mobile spacing here), which keeps
             the headline both fully visible and clear of the 80px navbar —
-            verified down to a 667px-tall screen. Reduced bottom padding on
-            mobile buys a little more of that headroom; full spacing returns
-            from md up, where the viewport dwarfs the content anyway. */}
-        <div className="relative z-10 mx-auto w-full max-w-[var(--container-content)] px-4 pb-10 sm:px-6 md:pb-16 lg:px-8 lg:pb-24">
+            verified down to a 667px-tall screen. Mobile's pb-10 stays
+            minimal to preserve that headroom; md/lg use a smaller pb than a
+            reflexive "more padding" instinct would suggest — bottom-padding
+            pushes the block *up* (it's inside the bottom-anchored box), so
+            a smaller pb is what actually pulls the headline down, away from
+            the navbar, on the taller viewports where there's slack to give. */}
+        <div className="relative z-10 mx-auto w-full max-w-[var(--container-content)] px-4 pb-10 sm:px-6 md:pb-10 lg:px-8 lg:pb-16">
           <h1 aria-label={HEADLINE} className="max-w-3xl text-hero text-ink-inverse">
             {HEADLINE_WORDS.map((word, index) => (
               <span

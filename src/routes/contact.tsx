@@ -25,7 +25,7 @@ export default function Contact() {
             id="contact-heading"
             headingLevel="h1"
             title="Contact Delvion Energy"
-            description="Schedule a free site visit, or reach us directly. Business details below are placeholders — see docs/DECISIONS.md."
+            description="Schedule a free site visit, or reach us directly."
           />
 
           {/* pr-20: clears the fixed WhatsAppButton (right-6 bottom-6, 56px,

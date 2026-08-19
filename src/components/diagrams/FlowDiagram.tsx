@@ -28,16 +28,14 @@ function Connector({ accent }: { accent: AccentColor }) {
   const { dot, border } = ACCENT_CLASSES[accent];
   return (
     <>
-      {/* Horizontal connector — visible at lg+. The endpoint dots are
-          static; the third span is a traveling particle (matches
-          EnergyFlow's animate-energy-flow) that rides the line between
-          them, left to right, on loop. */}
+      {/* Horizontal connector — visible at lg+. The endpoint dots live on
+          the nodes themselves (below), so the connector only needs the
+          dashed line plus a traveling particle (matches EnergyFlow's
+          animate-energy-flow) riding it left to right, on loop. */}
       <div
         aria-hidden="true"
         className={`relative mx-2 hidden h-px flex-1 border-t-2 border-dashed lg:block ${border}`}
       >
-        <span className={`absolute -left-1 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full ${dot}`} />
-        <span className={`absolute -right-1 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full ${dot}`} />
         <span className={`absolute top-1/2 left-0 h-2 w-2 -translate-y-1/2 rounded-full ${dot} animate-energy-flow`} />
       </div>
 
