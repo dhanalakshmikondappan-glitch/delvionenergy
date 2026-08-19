@@ -1,7 +1,9 @@
 /**
  * Reusable horizontal flow diagram — a chain of labelled nodes connected
- * by dashed lines. Used by both the Products section (PV component path)
- * and the Automation section (process steps).
+ * by dashed lines, with a traveling particle animation on each connector
+ * (matches EnergyFlow's animate-energy-flow treatment). Used by both the
+ * Products section (PV component path) and the Automation section
+ * (process steps).
  *
  * Horizontal at lg+ (6 nodes need real width, matching EnergyFlow's
  * choice); stacks vertically on smaller viewports.
@@ -26,20 +28,27 @@ function Connector({ accent }: { accent: AccentColor }) {
   const { dot, border } = ACCENT_CLASSES[accent];
   return (
     <>
-      {/* Horizontal connector — visible at lg+ */}
+      {/* Horizontal connector — visible at lg+. The endpoint dots are
+          static; the third span is a traveling particle (matches
+          EnergyFlow's animate-energy-flow) that rides the line between
+          them, left to right, on loop. */}
       <div
         aria-hidden="true"
         className={`relative mx-2 hidden h-px flex-1 border-t-2 border-dashed lg:block ${border}`}
       >
         <span className={`absolute -left-1 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full ${dot}`} />
         <span className={`absolute -right-1 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full ${dot}`} />
+        <span className={`absolute top-1/2 left-0 h-2 w-2 -translate-y-1/2 rounded-full ${dot} animate-energy-flow`} />
       </div>
 
-      {/* Vertical connector — visible below lg */}
+      {/* Vertical connector — visible below lg, same traveling particle
+          rotated to run top to bottom. */}
       <div
         aria-hidden="true"
-        className={`mx-auto h-6 w-px border-l-2 border-dashed lg:hidden ${border}`}
-      />
+        className={`relative mx-auto h-6 w-px border-l-2 border-dashed lg:hidden ${border}`}
+      >
+        <span className={`absolute top-0 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full ${dot} animate-energy-flow-vertical`} />
+      </div>
     </>
   );
 }

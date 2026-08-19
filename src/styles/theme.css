@@ -100,6 +100,7 @@
   /* ---- Decorative motion ---- */
   --animate-scroll-hint: scroll-hint 2s ease-in-out infinite;
   --animate-energy-flow: energy-flow 2.5s linear infinite;
+  --animate-energy-flow-vertical: energy-flow-vertical 2.5s linear infinite;
 }
 
 /* MASTER.md §20: energy particles, mercury-green, slow, continuous, never distracting. */
@@ -116,6 +117,26 @@
   }
   100% {
     transform: translateX(calc(100% - 8px));
+    opacity: 0;
+  }
+}
+
+/* Vertical companion to energy-flow, for FlowDiagram's stacked connectors
+ * below lg (Products/Automation flow diagrams show a vertical dashed line
+ * there instead of EnergyFlow's row-only layout). */
+@keyframes energy-flow-vertical {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(calc(100% - 8px));
     opacity: 0;
   }
 }

@@ -1,8 +1,6 @@
 import { Button } from "~/components/buttons/Button";
-import { EnergyFlow } from "~/components/diagrams/EnergyFlow";
 import { Container } from "~/components/layout/Container";
 import { Section } from "~/components/layout/Section";
-import { ScrollReveal } from "~/components/motion/ScrollReveal";
 import { buildMetaTags } from "~/constants/seo";
 import { ROUTE_PATHS } from "~/constants/routePaths";
 import { AutomationSection } from "~/sections/AutomationSection";
@@ -22,14 +20,6 @@ export default function Home() {
   return (
     <>
       <HeroSection />
-
-      <Section background="elevated">
-        <Container>
-          <ScrollReveal>
-            <EnergyFlow />
-          </ScrollReveal>
-        </Container>
-      </Section>
 
       <WhySolarSection />
       <SolutionsTeaserSection />
