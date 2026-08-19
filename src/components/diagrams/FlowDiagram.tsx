@@ -57,8 +57,6 @@ export function FlowDiagram({
   className,
   ariaLabel = "Process flow",
 }: FlowDiagramProps) {
-  const { dot } = ACCENT_CLASSES[accentColor];
-
   return (
     <div
       role="list"
@@ -67,8 +65,7 @@ export function FlowDiagram({
     >
       {steps.map((step, index) => (
         <div key={step} className="flex flex-col items-center lg:contents">
-          <div role="listitem" className="flex flex-col items-center gap-2 text-center">
-            <span className={`h-2 w-2 rounded-full ${dot}`} />
+          <div role="listitem" className="text-center">
             <span className="text-caption font-medium text-ink-muted">{step}</span>
           </div>
           {index < steps.length - 1 ? <Connector accent={accentColor} /> : null}
