@@ -15,7 +15,6 @@ const COLUMNS: FooterColumn[] = [
     title: "Company",
     links: [
       { label: "Home", to: ROUTE_PATHS.home },
-      { label: "How Solar Works", to: ROUTE_PATHS.howSolarWorks },
       { label: "FAQ", to: ROUTE_PATHS.faq },
     ],
   },
@@ -54,7 +53,7 @@ export function Footer() {
                   <li key={link.label}>
                     <Link
                       to={link.to}
-                      className="text-body text-ink-inverse/85 underline decoration-transparent underline-offset-4 transition-colors duration-fast hover:decoration-current"
+                      className="text-body text-ink-inverse/85 transition-colors duration-fast hover:text-ink-inverse"
                     >
                       {link.label}
                     </Link>
@@ -70,7 +69,7 @@ export function Footer() {
               <li>
                 <a
                   href={`tel:${COMPANY.phone}`}
-                  className="underline decoration-transparent underline-offset-4 transition-colors duration-fast hover:decoration-current"
+                  className="transition-colors duration-fast hover:text-ink-inverse"
                 >
                   {COMPANY.phoneDisplay}
                 </a>
@@ -78,7 +77,7 @@ export function Footer() {
               <li>
                 <a
                   href={`mailto:${COMPANY.email}`}
-                  className="underline decoration-transparent underline-offset-4 transition-colors duration-fast hover:decoration-current"
+                  className="transition-colors duration-fast hover:text-ink-inverse"
                 >
                   {COMPANY.email}
                 </a>
@@ -88,7 +87,7 @@ export function Footer() {
                   href={`https://wa.me/${COMPANY.whatsapp}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="underline decoration-transparent underline-offset-4 transition-colors duration-fast hover:decoration-current"
+                  className="transition-colors duration-fast hover:text-ink-inverse"
                 >
                   Chat on WhatsApp
                 </a>
@@ -100,17 +99,18 @@ export function Footer() {
         <div className="mt-12 flex flex-col gap-4 border-t border-ink-inverse/10 pt-8 md:flex-row md:items-center md:justify-between">
           <p className="text-caption text-ink-inverse/60">
             © {__BUILD_YEAR__} {COMPANY.name}. All rights reserved.
+            <span className="ml-3">GSTIN: {COMPANY.gstin}</span>
           </p>
           <div className="flex gap-6">
             <Link
               to={ROUTE_PATHS.privacyPolicy}
-              className="text-caption text-ink-inverse/60 underline decoration-transparent underline-offset-4 transition-colors duration-fast hover:decoration-current"
+              className="text-caption text-ink-inverse/60 transition-colors duration-fast hover:text-ink-inverse"
             >
               Privacy Policy
             </Link>
             <Link
               to={ROUTE_PATHS.terms}
-              className="text-caption text-ink-inverse/60 underline decoration-transparent underline-offset-4 transition-colors duration-fast hover:decoration-current"
+              className="text-caption text-ink-inverse/60 transition-colors duration-fast hover:text-ink-inverse"
             >
               Terms of Service
             </Link>

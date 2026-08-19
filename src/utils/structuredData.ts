@@ -13,15 +13,17 @@ export function buildOrganizationJsonLd(): JsonLdObject {
     url: COMPANY.siteUrl,
     email: COMPANY.email,
     telephone: COMPANY.phone,
+    // streetAddress/postalCode omitted until real values are available —
+    // schema.org's PostalAddress doesn't require them.
     address: {
       "@type": "PostalAddress",
-      streetAddress: COMPANY.address.streetAddress,
       addressLocality: COMPANY.address.addressLocality,
       addressRegion: COMPANY.address.addressRegion,
-      postalCode: COMPANY.address.postalCode,
       addressCountry: COMPANY.address.addressCountry,
     },
-    sameAs: Object.values(COMPANY.social).filter((url) => url.length > 0),
+    sameAs: Object.values(COMPANY.social).filter(
+      (url): url is string => typeof url === "string" && url.length > 0,
+    ),
   };
 }
 
@@ -42,12 +44,13 @@ export function buildLocalBusinessJsonLd(): JsonLdObject {
     url: COMPANY.siteUrl,
     telephone: COMPANY.phone,
     email: COMPANY.email,
+    taxID: COMPANY.gstin,
+    // streetAddress/postalCode omitted until real values are available —
+    // schema.org's PostalAddress doesn't require them.
     address: {
       "@type": "PostalAddress",
-      streetAddress: COMPANY.address.streetAddress,
       addressLocality: COMPANY.address.addressLocality,
       addressRegion: COMPANY.address.addressRegion,
-      postalCode: COMPANY.address.postalCode,
       addressCountry: COMPANY.address.addressCountry,
     },
     contactPoint: {

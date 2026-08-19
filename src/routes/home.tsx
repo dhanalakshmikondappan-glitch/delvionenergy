@@ -3,8 +3,8 @@ import { Container } from "~/components/layout/Container";
 import { Section } from "~/components/layout/Section";
 import { buildMetaTags } from "~/constants/seo";
 import { ROUTE_PATHS } from "~/constants/routePaths";
+import { AutomationSection } from "~/sections/AutomationSection";
 import { HeroSection } from "~/sections/HeroSection";
-import { HowSolarWorksPreview } from "~/sections/HowSolarWorksPreview";
 import { ProductsSection } from "~/sections/ProductsSection";
 import { SolutionsTeaserSection } from "~/sections/SolutionsTeaserSection";
 import { WhyDelvionSection } from "~/sections/WhyDelvionSection";
@@ -20,11 +20,12 @@ export default function Home() {
   return (
     <>
       <HeroSection />
+
       <WhySolarSection />
-      <HowSolarWorksPreview />
       <SolutionsTeaserSection />
 
       <ProductsSection />
+      <AutomationSection />
 
       <WhyDelvionSection />
 

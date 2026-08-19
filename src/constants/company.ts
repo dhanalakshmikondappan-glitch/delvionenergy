@@ -7,25 +7,19 @@ export const COMPANY = {
   name: "Delvion Energy",
   legalName: "Delvion Energy",
   siteUrl: "https://www.delvionenergy.in",
-  // TODO: real phone number (E.164 for tel: links, e.g. "+91XXXXXXXXXX").
-  phone: "+91TODO",
-  phoneDisplay: "TODO",
-  // TODO: WhatsApp number, digits only, no "+" (used in wa.me links).
-  whatsapp: "91TODO",
-  // TODO: real contact email.
-  email: "hello@TODO.example",
+  phone: "+918015296788",
+  phoneDisplay: "+91 80152 96788",
+  whatsapp: "918015296788",
+  email: "Delvionenergy@gmail.com",
+  gstin: "33KMAPK9720H1ZY",
   address: {
-    // TODO: real office address.
-    streetAddress: "TODO",
+    // Street address and postal code aren't available yet — add them here
+    // once known; structuredData.ts already omits them from JSON-LD until then.
     addressLocality: "Tiruchirappalli",
     addressRegion: "Tamil Nadu",
-    postalCode: "TODO",
     addressCountry: "IN",
   },
-  social: {
-    // TODO: real social profile URLs, or remove unused entries.
-    instagram: "",
-    linkedin: "",
-    youtube: "",
-  },
+  // No social profiles yet — add real URLs here when available (nothing
+  // renders them until then; buildOrganizationJsonLd's `sameAs` is empty).
+  social: {},
 } as const;

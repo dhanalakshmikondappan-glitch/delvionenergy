@@ -11,9 +11,9 @@ export interface NavItem {
  * (docs/DECISIONS.md #7).
  */
 export const NAV_ITEMS: NavItem[] = [
-  { label: "How Solar Works", path: ROUTE_PATHS.howSolarWorks },
   { label: "Solutions", path: ROUTE_PATHS.solutions },
   { label: "Products", path: `${ROUTE_PATHS.home}#products` },
+  { label: "Automation", path: `${ROUTE_PATHS.home}#automation` },
   { label: "Projects", path: ROUTE_PATHS.projects },
   { label: "Calculator", path: ROUTE_PATHS.calculator },
   { label: "FAQ", path: ROUTE_PATHS.faq },

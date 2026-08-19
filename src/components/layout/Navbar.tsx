@@ -33,7 +33,7 @@ export function Navbar({ overHero }: NavbarProps) {
           isTransparent ? "bg-transparent" : "border-b border-line bg-surface-elevated/95 backdrop-blur-sm"
         }`}
       >
-        <Container width="max" className="flex h-full items-center justify-between">
+        <Container width="max" className="flex h-full items-center justify-between gap-4">
           <Logo inverse={isTransparent} />
           <DesktopNav inverse={isTransparent} />
           <div className="flex items-center gap-2">
@@ -46,7 +46,7 @@ export function Navbar({ overHero }: NavbarProps) {
               aria-label="Open menu"
               aria-expanded={isMenuOpen}
               aria-controls={MOBILE_MENU_ID}
-              className={`rounded-[var(--radius-button)] p-2 transition-colors duration-fast lg:hidden ${
+              className={`rounded-[var(--radius-button)] p-2 transition-colors duration-fast xl:hidden ${
                 isTransparent ? "text-ink-inverse hover:bg-ink-inverse/10" : "text-ink hover:bg-surface"
               }`}
             >

@@ -1,9 +1,11 @@
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
+import type { ReactNode } from "react";
 
 export interface AccordionItem {
-  question: string;
-  answer: string;
+  title: string;
+  /** Plain text (e.g. an FAQ answer) or richer JSX (e.g. a description plus a bullet list). */
+  content: ReactNode;
 }
 
 interface AccordionProps {
@@ -15,6 +17,11 @@ interface AccordionProps {
  * transition, rotating chevron, keyboard accessible. The height animation
  * uses the CSS grid-template-rows 0fr/1fr technique so it never needs to
  * measure DOM heights in JS.
+ *
+ * Generic over `content` (ReactNode, not just a string) so this same
+ * interaction pattern serves both the FAQ page's plain-text answers and
+ * richer panels elsewhere (e.g. a description plus a bullet list) without
+ * a second accordion implementation.
  */
 export function Accordion({ items }: AccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -23,11 +30,11 @@ export function Accordion({ items }: AccordionProps) {
     <div className="divide-y divide-line border-y border-line">
       {items.map((item, index) => {
         const isOpen = openIndex === index;
-        const panelId = `faq-panel-${index}`;
-        const buttonId = `faq-button-${index}`;
+        const panelId = `accordion-panel-${index}`;
+        const buttonId = `accordion-button-${index}`;
 
         return (
-          <div key={item.question}>
+          <div key={item.title}>
             <h3>
               <button
                 id={buttonId}
@@ -39,7 +46,7 @@ export function Accordion({ items }: AccordionProps) {
                 }}
                 className="flex w-full items-center justify-between gap-4 py-6 text-left"
               >
-                <span className="text-subheading">{item.question}</span>
+                <span className="text-subheading">{item.title}</span>
                 <ChevronDown
                   aria-hidden="true"
                   className={`shrink-0 text-ink-muted transition-transform duration-normal ${isOpen ? "rotate-180" : ""}`}
@@ -55,13 +62,13 @@ export function Accordion({ items }: AccordionProps) {
               className={`grid transition-[grid-template-rows] duration-normal ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
             >
               <div className="overflow-hidden">
-                <p
+                <div
                   className={`pb-6 text-body text-ink-muted transition-opacity duration-normal ${
                     isOpen ? "opacity-100" : "opacity-0"
                   }`}
                 >
-                  {item.answer}
-                </p>
+                  {item.content}
+                </div>
               </div>
             </div>
           </div>

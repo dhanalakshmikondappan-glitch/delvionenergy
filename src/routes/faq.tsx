@@ -52,7 +52,9 @@ export default function Faq() {
         <Container width="reading">
           <SectionHeader id="faq-heading" headingLevel="h1" title="Frequently Asked Questions" />
           <div className="mt-12">
-            <Accordion items={FAQ_ITEMS} />
+            <Accordion
+              items={FAQ_ITEMS.map((item) => ({ title: item.question, content: item.answer }))}
+            />
           </div>
         </Container>
       </Section>

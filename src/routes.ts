@@ -6,7 +6,6 @@ export default [
   // instead of remounting per route.
   layout("routes/layout.tsx", [
     index("routes/home.tsx"),
-    route("how-solar-works", "routes/how-solar-works.tsx"),
     route("solutions", "routes/solutions.tsx"),
     route("solutions/residential", "routes/solutions.residential.tsx"),
     route("solutions/commercial", "routes/solutions.commercial.tsx"),

@@ -23,6 +23,8 @@
     light backgrounds fails AA (2.6:1) — use text-ink on mercury fills, or mercury only for icons/
     borders/fills, never as small body text color on a light surface. */
   --color-dawn: #e8a94a; /* signature accent — used sparingly, small details only, never a large fill */
+  --color-slate: #3b4a63; /* industrial automation accent — slate blue. AA-safe as text on surface
+    (~5.9:1) and on elevated (~6.5:1). Used for the Automation section's accent, tags, and CTA fill. */
   --color-panel: #c7ccc6; /* secondary — borders, panel motif */
   --color-line: #e1e3de; /* default hairline border */
   --color-line-strong: #c7ccc6; /* emphasized border — literal Panel Silver */
@@ -98,6 +100,7 @@
   /* ---- Decorative motion ---- */
   --animate-scroll-hint: scroll-hint 2s ease-in-out infinite;
   --animate-energy-flow: energy-flow 2.5s linear infinite;
+  --animate-energy-flow-vertical: energy-flow-vertical 2.5s linear infinite;
 }
 
 /* MASTER.md §20: energy particles, mercury-green, slow, continuous, never distracting. */
@@ -114,6 +117,26 @@
   }
   100% {
     transform: translateX(calc(100% - 8px));
+    opacity: 0;
+  }
+}
+
+/* Vertical companion to energy-flow, for FlowDiagram's stacked connectors
+ * below lg (Products/Automation flow diagrams show a vertical dashed line
+ * there instead of EnergyFlow's row-only layout). */
+@keyframes energy-flow-vertical {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(calc(100% - 8px));
     opacity: 0;
   }
 }
