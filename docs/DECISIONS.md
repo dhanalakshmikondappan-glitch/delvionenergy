@@ -649,3 +649,62 @@ images, zero console or page errors. 16 interaction assertions pass, covering th
 deep-link with a query string, chip filtering and URL sync, keyboard open/arrow/wrap/
 Escape in the lightbox, the accordion's deep link, and `/projects` 404ing. Screenshots
 of every changed surface were reviewed by eye at 375/768/1024/1512/1728.
+
+## Phase 8b — the reduced-motion homepage was blank, and one bug was hiding another
+
+A post-hoc verification pass on Phase 8 turned up two problems in the same chain.
+Neither was introduced by the imagery work; the second was actively *masked* by the
+first, which is why it had never shown up.
+
+**1. A hydration mismatch on the homepage.** `usePrefersReducedMotion` read
+`window.matchMedia(...)` inside a `useState` initializer. That initializer looks like
+it "defaults to false during prerendering", and its comment claimed as much — but it
+also runs on the client during hydration, where it returns the visitor's real
+preference. So a reduced-motion visitor hydrated `true` against HTML prerendered with
+`false`, and `HeroSection`'s `!isReady && !prefersReducedMotion` branch emitted the
+loading indicator on the server and nothing on the client: React error #418, homepage
+only, reduced motion only. Rewritten around `useSyncExternalStore`, whose
+`getServerSnapshot` pins the hydration render to `false` and lets React re-render with
+the true value immediately after — the same shape as the new `useHydrated` hook, and
+without the `set-state-in-effect` lint disable the old form would have needed.
+
+**2. Fixing that revealed a blank page.** With hydration succeeding, the prerendered
+HTML is kept rather than thrown away — and it carries **21 inline
+`opacity:0;transform:translateY(40px)` styles**, because the prerender cannot know the
+motion preference and always rendered the animated branch with `initial="hidden"`.
+`ScrollReveal` and `StaggerGroup` then swapped in a plain `<div>` under reduced motion,
+so nothing was left to drive those elements back to visible. Measured on the built
+site: three solution cards and 23 of 25 `h3`s at effective opacity 0 — essentially the
+entire homepage below the hero, invisible.
+
+That bug predates all of this work. It never surfaced because error #418 made React
+discard the server HTML and re-render the whole tree client-side, which incidentally
+wiped the stale inline styles. Verified by building the parent commit in a worktree:
+reduced motion there reports every card at opacity 1 *and* throws #418, while both
+builds' prerendered HTML contain the same 21 `opacity:0` declarations. One bug was
+papering over the other.
+
+The fix is a rule worth keeping: **reduced motion changes durations, never markup.**
+Both components now render the same motion element in both cases and vary only the
+transition (`{ duration: 0 }`, and `staggerChildren: 0`), so the element that owns the
+inline `opacity:0` is always the element that clears it. A zero-duration transition is
+still "no motion" — content appears instantly, with no fade and no travel — and it
+removes the hydration hazard `ScrollReveal`'s own comment had flagged as a worry.
+
+**Re-verified after the change**, since these components render on every page: 12
+routes x 9 viewports with zero overflow and zero console errors; 0 WCAG 2.1 AA
+violations (axe, desktop and mobile); all 22 route/preference combinations hydrate
+cleanly; 201 referenced image URLs all resolve; 16 interaction assertions and 4 focus
+assertions pass; normal-motion rendering visually unchanged.
+
+**One measurement recorded, deliberately not acted on.** The homepage transfers
+~3.9MB, of which ~3.2MB is the 60-frame hero cinematic; every other route is under
+1MB (`/what-we-build` is 878KB with all 28 photos, since they lazy-load below the
+fold). CLS is 0.002-0.0199 against a 0.05 budget. The hero sequence is the single
+largest obstacle to the Lighthouse 95+ target in MASTER.md §38, and is a Phase 7 design
+decision rather than a defect — left as-is by explicit choice, noted here so the
+trade-off is on the record.
+
+A false positive worth not chasing twice: axe reports the hero CTA at 3.94:1 if audited
+around 800ms after load, because it samples blended colors mid-animation. Settled, the
+real values (#14201b on #4fa97e) give 5.84:1, comfortably over AA.
