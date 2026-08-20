@@ -8,10 +8,16 @@ import { buildFaqPageJsonLd } from "~/utils/structuredData";
 
 import type { Route } from "./+types/faq";
 
-// MASTER.md §29 example questions, verbatim. Answers state general,
-// defensible solar-industry facts rather than specific company policy
-// figures (exact warranty terms, exact timelines) that would need to come
-// from the client to be accurate.
+// The five solar questions are MASTER.md §29's, verbatim; the automation
+// questions below them were added once the automation business line went
+// live, because this page emits FAQPage structured data and a solar-only
+// question set was telling search engines the company only does solar.
+//
+// Answers state general, defensible facts rather than specific company policy
+// figures (exact warranty terms, exact timelines) that would need to come from
+// the client to be accurate. The automation answers claim nothing the site
+// does not already say elsewhere — the categories and industries below are
+// the ones listed in AutomationSection.
 const FAQ_ITEMS = [
   {
     question: "How long does installation take?",
@@ -37,6 +43,21 @@ const FAQ_ITEMS = [
     question: "Can I expand later?",
     answer:
       "In most cases, yes — systems can often be expanded later if your usage grows, subject to available roof space and inverter capacity.",
+  },
+  {
+    question: "Does Delvion Energy do more than solar?",
+    answer:
+      "Yes. We run two engineering lines: rooftop solar for homes, businesses and industry, and custom industrial automation. The automation side covers special purpose machines, conveyors and material handling, robotic cells and gantry systems — each built around a specific production step rather than sold from a catalogue.",
+  },
+  {
+    question: "What is a special purpose machine?",
+    answer:
+      "A special purpose machine is built for one step of your process rather than adapted from a standard product — an assembly line station, a leak testing machine, a pressing or tightening system, or a drill and tap machine, for example. Because it is designed around how your line actually runs, every project starts by understanding that process before anything is designed.",
+  },
+  {
+    question: "Which industries do you build automation for?",
+    answer:
+      "Automotive, foundry and metal processing, electronics and electrical, consumer goods and appliances, aerospace, food and beverages, and general manufacturing. If your process isn't on that list it's still worth a conversation — most of what we build is one-off.",
   },
 ];
 

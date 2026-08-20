@@ -15,10 +15,17 @@ export interface RouteSeo {
  */
 export const ROUTE_SEO: Record<RouteKey, RouteSeo> = {
   home: {
-    title: "Delvion Energy — Modern Solar Engineering",
+    title: "Delvion Energy — Solar & Industrial Automation",
     description:
-      "Delvion Energy designs and installs intelligent solar systems that reduce electricity costs while building a cleaner future.",
-    keywords: ["Solar Installation", "Rooftop Solar", "Solar Company Trichy"],
+      "Delvion Energy designs intelligent solar systems for homes and industries, and builds custom automation that makes manufacturing units smarter and more efficient.",
+    keywords: [
+      "Solar Installation",
+      "Rooftop Solar",
+      "Solar Company Trichy",
+      "Industrial Automation",
+      "Special Purpose Machines",
+      "Robotic Automation",
+    ],
   },
   solutions: {
     title: "Solar Solutions for Every Scale — Delvion Energy",

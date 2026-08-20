@@ -8,12 +8,14 @@ import { Section } from "~/components/layout/Section";
 import { SectionHeader } from "~/components/layout/SectionHeader";
 import { ResponsiveImage } from "~/components/media/ResponsiveImage";
 import { StaggerGroup, StaggerItem } from "~/components/motion/StaggerGroup";
+import { JsonLd } from "~/components/seo/JsonLd";
 import { Modal } from "~/components/ui/Modal";
 import { AUTOMATION_CATEGORIES, GALLERY_ITEMS } from "~/constants/media";
 import type { AutomationCategoryId, GalleryItem } from "~/constants/media";
 import { ROUTE_PATHS } from "~/constants/routePaths";
 import { buildMetaTags } from "~/constants/seo";
 import { useHydrated } from "~/hooks/useHydrated";
+import { buildBreadcrumbJsonLd, buildServiceJsonLd } from "~/utils/structuredData";
 
 import type { Route } from "./+types/what-we-build";
 
@@ -34,6 +36,35 @@ function neighbour(list: GalleryItem[], index: number, delta: number): GalleryIt
 export function meta(_args: Route.MetaArgs) {
   return buildMetaTags("whatWeBuild");
 }
+
+/**
+ * The solar pages each declare a Service; the automation lines had no
+ * machine-readable equivalent anywhere on the site, so search engines could
+ * only infer that half of the business from page copy. One entry per line we
+ * actually build, described in the same terms the accordion and gallery use.
+ */
+const AUTOMATION_SERVICES = [
+  {
+    name: "Special Purpose Machines",
+    description:
+      "Machines built from the ground up around a single production step — assembly stations, leak testing, pressing, tightening, drilling and tapping, jigs and fixtures.",
+  },
+  {
+    name: "Conveyors and Material Handling Systems",
+    description:
+      "Pallet, slat, roller, belt, modular belt and chain conveyors, bucket elevators, gravity conveyors, trolley systems and manipulators, sized to your load, speed and layout.",
+  },
+  {
+    name: "Robotic Automation",
+    description:
+      "Robotic cells for machine tending, palletizing and depalletizing, deburring, and custom end-of-arm tooling.",
+  },
+  {
+    name: "Gantry Automation",
+    description:
+      "Cartesian gantry systems for CNC and VMC auto loading, dispensing and gluing, and palletizing over a large working area.",
+  },
+];
 
 /**
  * Equipment gallery: every machine, handling system and installation we
@@ -109,6 +140,17 @@ export default function WhatWeBuild() {
 
   return (
     <Section>
+      <JsonLd
+        data={[
+          ...AUTOMATION_SERVICES.map((service) =>
+            buildServiceJsonLd({ ...service, path: ROUTE_PATHS.whatWeBuild }),
+          ),
+          buildBreadcrumbJsonLd([
+            { name: "Home", path: ROUTE_PATHS.home },
+            { name: "What We Build", path: ROUTE_PATHS.whatWeBuild },
+          ]),
+        ]}
+      />
       <Container>
         <SectionHeader
           id="what-we-build-heading"

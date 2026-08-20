@@ -11,6 +11,20 @@ export function buildOrganizationJsonLd(): JsonLdObject {
     "@type": "Organization",
     name: COMPANY.name,
     url: COMPANY.siteUrl,
+    description: COMPANY.description,
+    // Both business lines, explicitly. Without these the only machine-readable
+    // statements about the company were the three solar Service entries, so
+    // the automation side was invisible to anything that reads the schema
+    // rather than the page.
+    knowsAbout: [
+      "Rooftop Solar Installation",
+      "Solar EPC",
+      "Industrial Automation",
+      "Special Purpose Machines",
+      "Conveyors and Material Handling Systems",
+      "Robotic Automation",
+      "Gantry Automation",
+    ],
     email: COMPANY.email,
     telephone: COMPANY.phone,
     // streetAddress/postalCode omitted until real values are available —
@@ -42,6 +56,7 @@ export function buildLocalBusinessJsonLd(): JsonLdObject {
     "@type": "LocalBusiness",
     name: COMPANY.name,
     url: COMPANY.siteUrl,
+    description: COMPANY.description,
     telephone: COMPANY.phone,
     email: COMPANY.email,
     taxID: COMPANY.gstin,
