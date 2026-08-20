@@ -11,7 +11,7 @@ export const ROUTE_PATHS = {
   solutionsResidential: "/solutions/residential",
   solutionsCommercial: "/solutions/commercial",
   solutionsIndustrial: "/solutions/industrial",
-  projects: "/projects",
+  whatWeBuild: "/what-we-build",
   calculator: "/calculator",
   faq: "/faq",
   contact: "/contact",

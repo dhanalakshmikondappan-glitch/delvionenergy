@@ -6,6 +6,8 @@ import { Container } from "~/components/layout/Container";
 import { Section } from "~/components/layout/Section";
 import { SectionHeader } from "~/components/layout/SectionHeader";
 import { StaggerGroup, StaggerItem } from "~/components/motion/StaggerGroup";
+import { SOLUTION_MEDIA } from "~/constants/media";
+import type { ImageAsset } from "~/constants/media";
 import { ROUTE_PATHS } from "~/constants/routePaths";
 
 interface Teaser {
@@ -13,8 +15,7 @@ interface Teaser {
   title: string;
   description: string;
   path: string;
-  imageBasePath: string;
-  imageAlt: string;
+  image: ImageAsset;
 }
 
 const TEASERS: Teaser[] = [
@@ -23,24 +24,21 @@ const TEASERS: Teaser[] = [
     title: "Residential",
     description: "Solar for your home.",
     path: ROUTE_PATHS.solutionsResidential,
-    imageBasePath: "/media/solutions/residential",
-    imageAlt: "A modern home with rooftop solar panels",
+    image: SOLUTION_MEDIA.residential,
   },
   {
     icon: Building2,
     title: "Commercial",
     description: "Power your business efficiently.",
     path: ROUTE_PATHS.solutionsCommercial,
-    imageBasePath: "/media/solutions/commercial",
-    imageAlt: "A commercial building with rooftop solar panels",
+    image: SOLUTION_MEDIA.commercial,
   },
   {
     icon: Factory,
     title: "Industrial",
     description: "Industrial scale energy solutions.",
     path: ROUTE_PATHS.solutionsIndustrial,
-    imageBasePath: "/media/solutions/industrial",
-    imageAlt: "An industrial site with a large-scale rooftop solar installation",
+    image: SOLUTION_MEDIA.industrial,
   },
 ];
 
@@ -58,8 +56,7 @@ export function SolutionsTeaserSection() {
                 title={teaser.title}
                 description={teaser.description}
                 path={teaser.path}
-                imageBasePath={teaser.imageBasePath}
-                imageAlt={teaser.imageAlt}
+                image={teaser.image}
               />
             </StaggerItem>
           ))}

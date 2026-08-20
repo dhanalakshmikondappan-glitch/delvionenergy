@@ -17,7 +17,8 @@
     "optimize-solutions-media": "node scripts/optimize-solutions-media.mjs",
     "optimize-products-media": "node scripts/optimize-products-media.mjs",
     "optimize-hero-sequence": "node scripts/optimize-hero-sequence.mjs",
-    "generate-sitemap": "node scripts/generate-sitemap.mts"
+    "generate-sitemap": "node scripts/generate-sitemap.mts",
+    "optimize-automation-media": "node scripts/optimize-automation-media.mjs"
   },
   "dependencies": {
     "@react-router/node": "8.3.0",

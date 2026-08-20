@@ -6,6 +6,14 @@ export interface AccordionItem {
   title: string;
   /** Plain text (e.g. an FAQ answer) or richer JSX (e.g. a description plus a bullet list). */
   content: ReactNode;
+  /**
+   * Optional thumbnail rendered inside the trigger, before the title — lets a
+   * closed accordion preview what each panel is about. Hidden below `md`:
+   * this theme sets `sm` to 375px, so an `sm:`-gated thumbnail still shows on
+   * a phone, where it squeezed a long title into four wrapped lines. Omitted
+   * by the FAQ, whose answers have no imagery.
+   */
+  media?: ReactNode;
 }
 
 interface AccordionProps {
@@ -46,7 +54,14 @@ export function Accordion({ items }: AccordionProps) {
                 }}
                 className="flex w-full items-center justify-between gap-4 py-6 text-left"
               >
-                <span className="text-subheading">{item.title}</span>
+                <span className="flex min-w-0 items-center gap-4">
+                  {item.media ? (
+                    <span className="hidden shrink-0 overflow-hidden rounded-[var(--radius-image)] border border-line md:block">
+                      {item.media}
+                    </span>
+                  ) : null}
+                  <span className="text-subheading">{item.title}</span>
+                </span>
                 <ChevronDown
                   aria-hidden="true"
                   className={`shrink-0 text-ink-muted transition-transform duration-normal ${isOpen ? "rotate-180" : ""}`}
