@@ -349,12 +349,11 @@ Never autoplay audio.
 
 Headline
 
-Powering Tomorrow with Smarter Solar Energy
+Powering Tomorrow. Automating Today.
 
 Subtitle
 
-From homes to industries,
-Delvion Energy designs and installs intelligent solar systems that reduce electricity costs while building a cleaner future.
+Delvion Energy designs intelligent solar systems for homes and industries, and builds custom automation solutions that make manufacturing units smarter and more efficient.
 
 Primary Button
 

@@ -11,9 +11,9 @@ import { useHeroTimeline } from "~/hooks/useHeroTimeline";
 import { usePrefersReducedMotion } from "~/hooks/usePrefersReducedMotion";
 
 // MASTER.md §12, verbatim.
-const HEADLINE = "Powering Tomorrow with Smarter Solar Energy";
+const HEADLINE = "Powering Tomorrow. Automating Today.";
 const SUBTITLE =
-  "From homes to industries, Delvion Energy designs and installs intelligent solar systems that reduce electricity costs while building a cleaner future.";
+  "Delvion Energy designs intelligent solar systems for homes and industries, and builds custom automation solutions that make manufacturing units smarter and more efficient.";
 
 const HEADLINE_WORDS = HEADLINE.split(" ");
 
