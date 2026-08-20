@@ -1,5 +1,4 @@
 import { Container } from "~/components/layout/Container";
-import { LegalDisclaimer } from "~/components/layout/LegalDisclaimer";
 import { Section } from "~/components/layout/Section";
 import { SectionHeader } from "~/components/layout/SectionHeader";
 import { COMPANY } from "~/constants/company";
@@ -17,11 +16,7 @@ export default function PrivacyPolicy() {
       <Container width="reading">
         <SectionHeader id="privacy-policy-heading" headingLevel="h1" title="Privacy Policy" align="left" />
 
-        <div className="mt-12">
-          <LegalDisclaimer />
-        </div>
-
-        <div className="flex flex-col gap-8 text-body text-ink-muted">
+        <div className="mt-12 flex flex-col gap-8 text-body text-ink-muted">
           <section>
             <h2 className="text-subheading text-ink">Information We Collect</h2>
             <p className="mt-2">

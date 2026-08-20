@@ -10,6 +10,8 @@ import { ResponsiveImage } from "~/components/media/ResponsiveImage";
 import { ParallaxImage } from "~/components/motion/ParallaxImage";
 import { ScrollReveal } from "~/components/motion/ScrollReveal";
 import { StaggerGroup, StaggerItem } from "~/components/motion/StaggerGroup";
+import { SOLUTION_MEDIA } from "~/constants/media";
+import type { ImageAsset } from "~/constants/media";
 import { ROUTE_PATHS } from "~/constants/routePaths";
 import { buildMetaTags } from "~/constants/seo";
 
@@ -20,8 +22,7 @@ interface SolutionTeaser {
   title: string;
   description: string;
   path: string;
-  imageBasePath: string;
-  imageAlt: string;
+  image: ImageAsset;
 }
 
 const SOLUTIONS: SolutionTeaser[] = [
@@ -30,24 +31,21 @@ const SOLUTIONS: SolutionTeaser[] = [
     title: "Residential",
     description: "Reduce electricity bills while increasing property value.",
     path: ROUTE_PATHS.solutionsResidential,
-    imageBasePath: "/media/solutions/residential",
-    imageAlt: "A modern home with rooftop solar panels",
+    image: SOLUTION_MEDIA.residential,
   },
   {
     icon: Building2,
     title: "Commercial",
     description: "Offset daytime energy usage with predictable, lower operating costs.",
     path: ROUTE_PATHS.solutionsCommercial,
-    imageBasePath: "/media/solutions/commercial",
-    imageAlt: "A commercial building with rooftop solar panels",
+    image: SOLUTION_MEDIA.commercial,
   },
   {
     icon: Factory,
     title: "Industrial",
     description: "Custom-engineered, large-scale solar for factories and industrial rooftops.",
     path: ROUTE_PATHS.solutionsIndustrial,
-    imageBasePath: "/media/solutions/industrial",
-    imageAlt: "An industrial site with a large-scale rooftop solar installation",
+    image: SOLUTION_MEDIA.industrial,
   },
 ];
 
@@ -70,9 +68,9 @@ export default function Solutions() {
           <ScrollReveal variants={scaleIn} className="mt-12">
             <ParallaxImage className="aspect-video w-full rounded-[var(--radius-image)]">
               <ResponsiveImage
-                basePath="/media/solutions/hub"
-                widths={[640, 960, 1280, 1600, 1920]}
-                alt="Delvion Energy installations across a residential home, commercial building and industrial site"
+                basePath={SOLUTION_MEDIA.hub.basePath}
+                widths={SOLUTION_MEDIA.hub.widths}
+                alt={SOLUTION_MEDIA.hub.alt}
                 className="h-full w-full object-cover"
               />
             </ParallaxImage>
@@ -90,8 +88,7 @@ export default function Solutions() {
                   title={solution.title}
                   description={solution.description}
                   path={solution.path}
-                  imageBasePath={solution.imageBasePath}
-                  imageAlt={solution.imageAlt}
+                  image={solution.image}
                   headingLevel="h2"
                 />
               </StaggerItem>

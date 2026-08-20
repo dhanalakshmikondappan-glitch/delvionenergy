@@ -543,3 +543,109 @@ a CSS media-query rule for correctness even if JS is slow to hydrate, and a JS c
 that skips the artificial wait). Min display 500ms, max wait 1800ms (capped so a slow
 connection doesn't get stuck staring at a logo) — verified via network trace that the
 poster fetch it gates on actually happens and resolves.
+
+## Phase 8 — the supplied photography lands, and the last placeholders go
+
+You dropped 29 images into `public/media/Delvion Photos for website/` and asked for
+them to be worked into the site, with nothing left that reads as a placeholder and
+every view checked from phone to 16" MacBook.
+
+**Four findings decided the shape of this, and you chose each call.**
+
+1. `Commercial Solar — Retail Facility Rooftop.png` and `Industrial Solar — Warehouse
+   Rooftop.png` are the same file byte-for-byte (MD5 `7b4de858…`) — 2 distinct solar
+   photos, not 3. Your call: real photography for Residential and Commercial,
+   Industrial keeps its Phase 4 render. The duplicate was deleted rather than shown
+   twice side by side on the Solutions hub. The cost is a visible tonal split there —
+   two midday photographs next to a golden-hour render — which is the honest trade for
+   not repeating an image or captioning a warehouse as something it isn't.
+2. Every master carries the generator's sparkle watermark bottom-right. Your call:
+   crop it. Measured rather than eyeballed — a vote across all 28 masters (each pixel's
+   deviation from its own local blur, counted by how many images it recurs in) put the
+   mark at x 1232-1278, y 624-671 at 70% agreement, nothing at 90%, which also confirms
+   it blends differently over light and dark backgrounds. `WATERMARK_FREE_CROP` in
+   `scripts/lib/media.mjs` takes `1228x685` anchored at x=0 — the widest crop that
+   clears it, with the height cut to match so the source's 1.792 aspect survives into
+   the `aspect-video` slots these fill.
+3. Filenames mapped almost 1:1 onto the Automation accordion's lists, with three
+   mismatches you resolved: "Chain Conveyor" and "Robotic Palletizing & Depalletizing"
+   are real capabilities and were added to their lists; "Dispensing & Gluing" moved from
+   the Robotic list to Gantry, matching the folder you filed it under.
+4. Four listed items still have no photograph (Inspection & Testing, Aluminum Ladling,
+   PDC & GDC Extraction, Autoloading On Washing Machine). Rather than leave four holes
+   in a photo grid, each accordion category previews one lead image in its header and
+   links to the full set; the item lists stay text.
+
+**Where the 83MB went.** The masters were committed inside `public/`, so Vite was
+copying all 83MB into the build. They now live in `assets/automation/{spm,conveyors,
+robotic,gantry}/` and `assets/solar/` under slugged names (`git mv`, so history
+follows), and `scripts/optimize-automation-media.mjs` emits AVIF+WebP at 640/960/1200
+into `public/media/automation/`. `optimize-solutions-media.mjs` was rewritten to
+regenerate residential/commercial from the new masters; it deliberately does *not*
+touch `hub` and `industrial`, whose masters were never kept — their committed
+derivatives are the only copy, still at the original five widths. `public/media` went
+from 92MB to 14MB. Post-crop masters are 1228px wide, so 1200 is the largest honest
+width and residential/commercial lost their 1280/1600/1920 variants; that asymmetry is
+exactly why `SOLUTION_MEDIA` in the new `src/constants/media.ts` carries `widths` per
+image instead of a shared constant — asking `<ResponsiveImage>` for a size that was
+never generated is a silent 404 in the srcset.
+
+**`src/constants/media.ts`** is now the one place any photograph is described. Alt text
+and base paths for the three solutions were previously duplicated between
+`solutions.tsx` and `SolutionsTeaserSection.tsx`, and each detail page hardcoded its own
+`widths`; `SolutionCard` now takes a whole `ImageAsset` instead of loose props. The same
+file holds `GALLERY_ITEMS`, feeding both the accordion's lead images and the gallery
+page, so the two cannot drift. Alt text describes what is actually in each frame — all
+28 were opened and looked at, not inferred from filenames.
+
+**Projects became /what-we-build.** The page was three grey icon boxes reading "Photo
+pending" / "Location to be added" — the most obvious placeholder on the site. It is now
+a filterable gallery of all 28 photographs with a lightbox. Deliberately not a
+case-study page: no location, capacity or customer story, because none of that exists
+yet, and the photography evidences capability rather than completed installs. The route
+was renamed (`ROUTE_PATHS.projects` -> `whatWeBuild`) since `/projects` no longer
+described the content; `PRERENDER_PATHS`, the sitemap and the nav follow automatically,
+and `/projects` now 404s.
+
+The active filter lives in the URL so the accordion can deep-link into a business line.
+That collides with `ssr: false` + prerender — one HTML file answers every query string
+for a route, so a first render that read `location.search` would hydrate against markup
+that assumed none. The new `useHydrated` hook returns false through the hydration pass
+via `useSyncExternalStore`, which fixes it without the `set-state-in-effect` disable the
+Modal needed for its own version of this problem. The lightbox tracks the open photo by
+id rather than index, so changing the filter under an open lightbox closes it instead of
+leaving a stale index pointing at whatever now occupies that slot.
+
+**Placeholders removed.** `LegalDisclaimer.tsx` is deleted along with its banner on
+Privacy and Terms — noted plainly, since you asked: removing the banner stops the site
+announcing that the policy is unreviewed template language, it does not make it
+reviewed. The contact page's dashed "Map embed pending office address confirmation" box
+became the residential rooftop photograph; still no Maps API key, but an empty framed
+box read as unfinished where a real photo does not. A grep for
+`placeholder|pending|to be added|lorem|coming soon|TODO|FIXME` across `src/` now returns
+one hit: a code comment about CSS class ordering in `Button.tsx`.
+
+**Two real bugs the responsive pass caught, both from one cause.** This theme sets
+`--breakpoint-sm` to **375px** (`theme.css`), so `sm:` utilities fire *on phones*, not
+above them. The gallery's `sm:grid-cols-2` therefore rendered two columns on a 375px
+handset — cards barely wider than their own titles — and the accordion's `sm:block`
+thumbnail showed there too, squeezing "Special Purpose Machines (SPM)" into four
+wrapped lines. Both moved to `md:` (768px). The same mistake was already latent in the
+Automation item list (`sm:grid-cols-2`), which is why "Jigs & Fixtures (Machining &
+Assembly)" wrapped mid-phrase on a phone; that moved to `md:` too. Worth remembering
+before writing another `sm:` in this project.
+
+Also found: the lightbox's arrow-key handler was attached to the dialog's *content*,
+below the close button that `useFocusTrap` moves focus to — so keydown never bubbled
+through it and the arrows silently did nothing. It is a document-level listener now,
+the same shape as Modal's own Escape handler.
+
+**Verification.** Playwright against a static server that serves the prerendered
+`<route>/index.html` the way Vercel does — `vite preview` is not usable for this, as it
+answers every path with the homepage shell (`/calculator` returns the homepage title
+too; pre-existing, not caused by this work). 12 routes x 9 viewports (375, 393, 852x393
+landscape, 768, 1024x768, 1280, 1512, 1728, 1920): zero horizontal overflow, zero broken
+images, zero console or page errors. 16 interaction assertions pass, covering the cold
+deep-link with a query string, chip filtering and URL sync, keyboard open/arrow/wrap/
+Escape in the lightbox, the accordion's deep link, and `/projects` 404ing. Screenshots
+of every changed surface were reviewed by eye at 375/768/1024/1512/1728.

@@ -2,36 +2,36 @@ import type { LucideIcon } from "lucide-react";
 import { Link } from "react-router";
 
 import { ResponsiveImage } from "~/components/media/ResponsiveImage";
+import type { ImageAsset } from "~/constants/media";
 
 interface SolutionCardProps {
   icon: LucideIcon;
   title: string;
   description: string;
   path: string;
-  imageBasePath: string;
-  imageAlt: string;
+  image: ImageAsset;
   /** Defaults to h3 (card sits under a section h2). Pass h2 when the card
    * is the next heading level down from the page's own h1. */
   headingLevel?: "h2" | "h3";
 }
 
-const CARD_WIDTHS = [640, 960, 1280];
-
 /**
  * Editorial, photography-led version of the plain icon+text solution
- * teaser: the actual residential/commercial/industrial renders (docs/
- * DECISIONS.md — Phase 4) now do the work of differentiating the three
- * cards at a glance, with the icon reduced to a small supporting badge.
- * Shared between the homepage teaser grid and the Solutions hub page so
- * the two never drift out of sync with each other.
+ * teaser: the residential/commercial/industrial imagery does the work of
+ * differentiating the three cards at a glance, with the icon reduced to a
+ * small supporting badge. Shared between the homepage teaser grid and the
+ * Solutions hub page so the two never drift out of sync with each other.
+ *
+ * Takes a whole `ImageAsset` rather than a base path, because residential
+ * and commercial are photographs capped at 1200px while industrial is still
+ * a wider render — the available widths differ per solution.
  */
 export function SolutionCard({
   icon: Icon,
   title,
   description,
   path,
-  imageBasePath,
-  imageAlt,
+  image,
   headingLevel = "h3",
 }: SolutionCardProps) {
   const Heading = headingLevel;
@@ -43,9 +43,9 @@ export function SolutionCard({
     >
       <div className="aspect-[4/3] overflow-hidden">
         <ResponsiveImage
-          basePath={imageBasePath}
-          widths={CARD_WIDTHS}
-          alt={imageAlt}
+          basePath={image.basePath}
+          widths={image.widths}
+          alt={image.alt}
           sizes="(min-width: 768px) 33vw, 100vw"
           className="h-full w-full object-cover transition-transform duration-slow group-hover:scale-105"
         />

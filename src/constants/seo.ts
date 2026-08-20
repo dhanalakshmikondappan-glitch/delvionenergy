@@ -41,10 +41,11 @@ export const ROUTE_SEO: Record<RouteKey, RouteSeo> = {
     description: "Custom-engineered, large-scale solar for factories and industrial rooftops.",
     keywords: ["Industrial Solar", "Solar Panels Tamil Nadu"],
   },
-  projects: {
-    title: "Our Projects — Delvion Energy",
-    description: "Completed solar installations across homes, businesses and industry.",
-    keywords: ["Solar Company Trichy", "Solar Installation"],
+  whatWeBuild: {
+    title: "What We Build — Delvion Energy",
+    description:
+      "The special-purpose machines, conveyors, robotic and gantry automation, and rooftop solar systems Delvion Energy designs and builds.",
+    keywords: ["Industrial Automation", "Special Purpose Machines", "Solar Installation"],
   },
   calculator: {
     title: "Solar Savings Calculator — Delvion Energy",

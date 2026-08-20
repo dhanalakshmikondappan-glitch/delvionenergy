@@ -11,6 +11,7 @@ import { ParallaxImage } from "~/components/motion/ParallaxImage";
 import { ScrollReveal } from "~/components/motion/ScrollReveal";
 import { StaggerGroup, StaggerItem } from "~/components/motion/StaggerGroup";
 import { JsonLd } from "~/components/seo/JsonLd";
+import { SOLUTION_MEDIA } from "~/constants/media";
 import { ROUTE_PATHS } from "~/constants/routePaths";
 import { buildMetaTags, ROUTE_SEO } from "~/constants/seo";
 import { buildBreadcrumbJsonLd, buildServiceJsonLd } from "~/utils/structuredData";
@@ -59,9 +60,9 @@ export default function SolutionsIndustrial() {
           <ScrollReveal variants={scaleIn} className="mt-12">
             <ParallaxImage className="aspect-video w-full rounded-[var(--radius-image)]">
               <ResponsiveImage
-                basePath="/media/solutions/industrial"
-                widths={[640, 960, 1280, 1600, 1920]}
-                alt="An industrial site with a large-scale rooftop solar installation"
+                basePath={SOLUTION_MEDIA.industrial.basePath}
+                widths={SOLUTION_MEDIA.industrial.widths}
+                alt={SOLUTION_MEDIA.industrial.alt}
                 className="h-full w-full object-cover"
               />
             </ParallaxImage>

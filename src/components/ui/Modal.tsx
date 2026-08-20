@@ -10,7 +10,18 @@ interface ModalProps {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  /**
+   * "wide" gives image-led dialogs (the /what-we-build lightbox) room to show
+   * a 16:9 photo at a useful size; "default" keeps the reading-width panel the
+   * text dialogs want.
+   */
+  size?: "default" | "wide";
 }
+
+const SIZE_CLASS: Record<NonNullable<ModalProps["size"]>, string> = {
+  default: "max-w-2xl",
+  wide: "max-w-5xl",
+};
 
 /**
  * Generic dialog primitive (MASTER.md §47 component library). Same
@@ -23,9 +34,9 @@ interface ModalProps {
  * the client's first render (guarded only by `typeof document ===
  * "undefined"`, true only on the server) inserted a new subtree straight
  * into document.body during hydration and produced a real React error
- * #418 on every route that mounts a Modal (Projects).
+ * #418 on every route that mounts a Modal.
  */
-export function Modal({ open, onClose, title, children }: ModalProps) {
+export function Modal({ open, onClose, title, children, size = "default" }: ModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
 
@@ -66,7 +77,7 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
       <div aria-hidden="true" onClick={onClose} className="absolute inset-0 bg-surface-dark/70" />
       <div
         ref={panelRef}
-        className={`relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-[var(--radius-card)] bg-surface-elevated p-8 shadow-lg transition-transform duration-normal ${
+        className={`relative max-h-[90vh] w-full ${SIZE_CLASS[size]} overflow-y-auto rounded-[var(--radius-card)] bg-surface-elevated p-6 shadow-lg transition-transform duration-normal sm:p-8 ${
           open ? "scale-100" : "scale-95"
         }`}
       >

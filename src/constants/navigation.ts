@@ -14,7 +14,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Solutions", path: ROUTE_PATHS.solutions },
   { label: "Products", path: `${ROUTE_PATHS.home}#products` },
   { label: "Automation", path: `${ROUTE_PATHS.home}#automation` },
-  { label: "Projects", path: ROUTE_PATHS.projects },
+  { label: "What We Build", path: ROUTE_PATHS.whatWeBuild },
   { label: "Calculator", path: ROUTE_PATHS.calculator },
   { label: "FAQ", path: ROUTE_PATHS.faq },
   { label: "Contact", path: ROUTE_PATHS.contact },

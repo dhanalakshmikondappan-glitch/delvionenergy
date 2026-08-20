@@ -10,7 +10,7 @@ export default [
     route("solutions/residential", "routes/solutions.residential.tsx"),
     route("solutions/commercial", "routes/solutions.commercial.tsx"),
     route("solutions/industrial", "routes/solutions.industrial.tsx"),
-    route("projects", "routes/projects.tsx"),
+    route("what-we-build", "routes/what-we-build.tsx"),
     route("calculator", "routes/calculator.tsx"),
     route("faq", "routes/faq.tsx"),
     route("contact", "routes/contact.tsx"),

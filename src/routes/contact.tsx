@@ -4,8 +4,10 @@ import { ContactForm } from "~/components/forms/ContactForm";
 import { Container } from "~/components/layout/Container";
 import { Section } from "~/components/layout/Section";
 import { SectionHeader } from "~/components/layout/SectionHeader";
+import { ResponsiveImage } from "~/components/media/ResponsiveImage";
 import { JsonLd } from "~/components/seo/JsonLd";
 import { COMPANY } from "~/constants/company";
+import { SOLUTION_MEDIA } from "~/constants/media";
 import { buildMetaTags } from "~/constants/seo";
 import { buildLocalBusinessJsonLd } from "~/utils/structuredData";
 
@@ -91,12 +93,17 @@ export default function Contact() {
                 </div>
               </div>
 
-              {/* No Google Maps API key exists yet — a static "office info"
-                  card is honest; a fabricated embed would silently fail or
-                  need a key we don't have. Swap for a real embed once one
-                  is available. */}
-              <div className="flex aspect-video w-full items-center justify-center rounded-[var(--radius-image)] border border-dashed border-line bg-surface text-center">
-                <p className="px-6 text-caption text-ink-muted">Map embed pending office address confirmation.</p>
+              {/* Closes the column against the taller form beside it. A real
+                  photograph rather than a map: no Google Maps API key exists
+                  yet, and an empty framed box read as unfinished. */}
+              <div className="hidden overflow-hidden rounded-[var(--radius-image)] border border-line lg:block">
+                <ResponsiveImage
+                  basePath={SOLUTION_MEDIA.residential.basePath}
+                  widths={SOLUTION_MEDIA.residential.widths}
+                  alt={SOLUTION_MEDIA.residential.alt}
+                  sizes="(min-width: 1024px) 33vw, 100vw"
+                  className="aspect-video w-full object-cover"
+                />
               </div>
             </div>
           </div>

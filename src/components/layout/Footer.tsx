@@ -30,7 +30,7 @@ const COLUMNS: FooterColumn[] = [
     title: "Resources",
     links: [
       { label: "Savings Calculator", to: ROUTE_PATHS.calculator },
-      { label: "Our Projects", to: ROUTE_PATHS.projects },
+      { label: "What We Build", to: ROUTE_PATHS.whatWeBuild },
     ],
   },
 ];
