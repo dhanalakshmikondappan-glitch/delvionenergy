@@ -126,3 +126,67 @@
     }
   }
 }
+
+/* Short viewports — small phones, and any phone held in landscape.
+ *
+ * Deliberately OUTSIDE `@layer base` above: these rules exist to beat the
+ * Tailwind spacing utilities on the same elements, and anything in the base
+ * layer loses to the utilities layer no matter how specific it is or what
+ * order the files are imported in. Unlayered CSS outranks every layer, which
+ * is exactly the guarantee this block needs.
+ *
+ * The hero stack is bottom-anchored inside a 100svh section, so when the
+ * headline, subtitle, CTAs and trust chips are collectively taller than the
+ * viewport the overflow goes off the *top*: the headline slides up under the
+ * navbar and its first line is simply never seen. Measured on the built site
+ * before this block existed, the stack was 708px inside a 667px-tall iPhone
+ * SE and 566px inside a 393px-tall landscape phone.
+ *
+ * Gated on height rather than width, because height is the actual constraint:
+ * a 375x852 phone has plenty of room and is left alone, while a short desktop
+ * window has the same problem a small phone does. Both thresholds sit below
+ * every ordinary layout — the shortest tall phone is 852px and the shortest
+ * laptop 800px — so nothing outside the affected set changes.
+ */
+@media (max-height: 700px) {
+  [data-hero-stack] {
+    padding-bottom: 1rem;
+  }
+
+  [data-hero-stack] h1 {
+    font-size: 1.875rem;
+    line-height: 1.12;
+  }
+
+  [data-hero-stack] [data-hero="subtitle"] {
+    margin-top: 0.5rem;
+  }
+
+  [data-hero-stack] [data-hero="cta"] {
+    margin-top: 0.75rem;
+  }
+
+  [data-hero-stack] [data-hero-trust] {
+    margin-top: 0.75rem;
+  }
+
+  /* The chips are meant to wrap to two rows, but once the labels grew past
+   * half the viewport width each one claimed its own row — four rows, 186px.
+   * An explicit two-column grid holds them to two rows whatever the labels
+   * say. */
+  [data-hero-stack] [data-hero="trust"] {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Landscape phones: even a two-row chip grid does not fit. 393px of height
+ * leaves roughly 310px once the navbar is cleared, and the headline,
+ * subtitle and CTAs need nearly all of it. Of the three the trust chips are
+ * the supporting element (MASTER.md §18), so they are what gives way — and
+ * they come straight back when the phone is rotated upright. */
+@media (max-height: 520px) {
+  [data-hero-stack] [data-hero-trust] {
+    display: none;
+  }
+}

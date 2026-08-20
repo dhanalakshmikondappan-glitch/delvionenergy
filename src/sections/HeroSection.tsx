@@ -93,7 +93,10 @@ export function HeroSection() {
             pushes the block *up* (it's inside the bottom-anchored box), so
             a smaller pb is what actually pulls the headline down, away from
             the navbar, on the taller viewports where there's slack to give. */}
-        <div className="relative z-10 mx-auto w-full max-w-[var(--container-content)] px-4 pb-10 sm:px-6 md:pb-10 lg:px-8 lg:pb-16">
+        <div
+          data-hero-stack
+          className="relative z-10 mx-auto w-full max-w-[var(--container-content)] px-4 pb-10 sm:px-6 md:pb-10 lg:px-8 lg:pb-16"
+        >
           <h1 aria-label={HEADLINE} className="max-w-3xl text-hero text-ink-inverse">
             {HEADLINE_WORDS.map((word, index) => (
               <span
@@ -124,7 +127,7 @@ export function HeroSection() {
             </Button>
           </div>
 
-          <div className="mt-6 md:mt-10">
+          <div data-hero-trust className="mt-6 md:mt-10">
             <TrustIndicators />
           </div>
         </div>
